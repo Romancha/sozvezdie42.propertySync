@@ -1,0 +1,100 @@
+package ru.sozvezdie42.iproperty.components;
+
+import java.util.Arrays;
+
+/**
+ * Created by Roman on 12/5/2016.
+ */
+public class Location {
+
+    public static final String ID_COORDINATES = "coords:";
+    public static final String ID_COORDINATES_2 = "jsapi&ll=";
+
+    private String street;
+    private String city;
+    private String region;
+    private String district;
+    private String house;
+    private String apartment;
+    private String locationStr;
+    private double[] coordinates;
+
+    public Location(String locationStr, String street, String city, String district, String house, double[] coordinates) {
+        this.locationStr = locationStr;
+        this.street = street;
+        this.city = city;
+        this.district = district;
+        this.house = house;
+        this.coordinates = coordinates;
+    }
+
+    public String getLocationStr() {
+        return locationStr;
+    }
+
+    public void setLocationStr(String locationStr) {
+        this.locationStr = locationStr;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getHouse() {
+        return house;
+    }
+
+    public void setHouse(String house) {
+        this.house = house;
+    }
+
+    public String getApartment() {
+        return apartment;
+    }
+
+    public void setApartment(String apartment) {
+        this.apartment = apartment;
+    }
+
+    public double[] getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(double[] coordinates) {
+        this.coordinates = coordinates;
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", region='" + region + '\'' +
+                ", district='" + district + '\'' +
+                ", house='" + house + '\'' +
+                ", apartment='" + apartment + '\'' +
+                ", locationStr='" + locationStr + '\'' +
+                ", coordinates=" + Arrays.toString(coordinates) +
+                '}';
+    }
+}
