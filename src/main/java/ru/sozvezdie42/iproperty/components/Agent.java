@@ -3,7 +3,7 @@ package ru.sozvezdie42.iproperty.components;
 /**
  * Created by Roman on 12/5/2016.
  */
-public class Contacts {
+public class Agent {
 
     public static final String ID_AGENT = "Агент:";
     public static final String ID_TELEPHONE = "Телефон:";
@@ -12,19 +12,49 @@ public class Contacts {
     public static final String ID_UPDATE = "Обновлено:";
     public static final String ID_WATCHERS = "Просмотров:";
 
+    private int id;
     private String name;
     private String telephone;
     private String email;
-    private String company;
+    private int company;
     private String update;
     private int watchers;
 
-    public Contacts(String name, String telephone, String email, String company, String update, int watchers) {
+    public int getId() {
+        switch (this.name) {
+            case "Марина Николаевна":
+                return 1;
+            case "Марина Валерьевна":
+            case "Марина":
+                return 2;
+            case "Наталья Алексеевна":
+            case "Наталья":
+                return 3;
+        }
+        return 0;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setCompany(int company) {
         this.company = company;
+    }
+
+    public void setUpdate(String update) {
         this.update = update;
+    }
+
+    public void setWatchers(int watchers) {
         this.watchers = watchers;
     }
 
@@ -40,7 +70,7 @@ public class Contacts {
         return email;
     }
 
-    public String getCompany() {
+    public int getCompany() {
         return company;
     }
 

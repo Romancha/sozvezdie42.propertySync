@@ -5,6 +5,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import ru.sozvezdie42.iproperty.components.PropertyType;
 import ru.sozvezdie42.iproperty.components.ResidentialSize;
+import ru.sozvezdie42.iproperty.components.Storey;
 import ru.sozvezdie42.iproperty.components.specifications.Balcony;
 import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
 import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
@@ -129,6 +130,22 @@ public class ResidentialParser extends Parser {
         balcony = new Balcony(balconyAmt, loggiaAmt, decoration);
 
         return new ResidentialSpecifications(bathroom, balcony, communications, state);
+    }
+
+    public Storey getStorey(Document document) {
+        Element element = document.getElementsByClass("domstor_object_floor").first();
+        Element pElement = element.select("p").first();
+
+        String storeyStr = pElement.text();
+        String[] splitStoreys = storeyStr.split("/");
+        int storey = Integer.parseInt(splitStoreys[0]);
+        int maxStorey = Integer.parseInt(splitStoreys[1]);
+
+        Storey st = new Storey();
+        st.setStorey(storey);
+        st.setMaxStorey(maxStorey);
+
+        return st;
     }
 
 }

@@ -14,17 +14,16 @@ public class Location {
     private String city;
     private String region;
     private String district;
-    private String house;
+    private String numberHouse;
     private String apartment;
     private String locationStr;
     private double[] coordinates;
 
-    public Location(String locationStr, String street, String city, String district, String house, double[] coordinates) {
-        this.locationStr = locationStr;
+    public Location(String street, String city, String district, String numberHouse, double[] coordinates) {
         this.street = street;
         this.city = city;
         this.district = district;
-        this.house = house;
+        this.numberHouse = numberHouse;
         this.coordinates = coordinates;
     }
 
@@ -60,12 +59,12 @@ public class Location {
         this.district = district;
     }
 
-    public String getHouse() {
-        return house;
+    public String getNumberHouse() {
+        return numberHouse;
     }
 
-    public void setHouse(String house) {
-        this.house = house;
+    public void setNumberHouse(String numberHouse) {
+        this.numberHouse = numberHouse;
     }
 
     public String getApartment() {
@@ -84,6 +83,10 @@ public class Location {
         this.coordinates = coordinates;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
     @Override
     public String toString() {
         return "Location{" +
@@ -91,7 +94,7 @@ public class Location {
                 ", city='" + city + '\'' +
                 ", region='" + region + '\'' +
                 ", district='" + district + '\'' +
-                ", house='" + house + '\'' +
+                ", numberHouse='" + numberHouse + '\'' +
                 ", apartment='" + apartment + '\'' +
                 ", locationStr='" + locationStr + '\'' +
                 ", coordinates=" + Arrays.toString(coordinates) +

@@ -7,8 +7,11 @@ public class Storey {
     private int storey;
     private int maxStorey;
 
-    public Storey(int storey, int maxStorey) {
+    public void setStorey(int storey) {
         this.storey = storey;
+    }
+
+    public void setMaxStorey(int maxStorey) {
         this.maxStorey = maxStorey;
     }
 
@@ -18,5 +21,13 @@ public class Storey {
 
     public int getMaxStorey() {
         return maxStorey;
+    }
+
+    @Override
+    public String toString() {
+        return "Storey{" +
+                "storey=" + storey +
+                ", maxStorey=" + maxStorey +
+                '}';
     }
 }

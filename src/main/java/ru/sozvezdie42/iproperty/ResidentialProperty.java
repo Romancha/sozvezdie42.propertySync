@@ -25,4 +25,12 @@ public class ResidentialProperty extends Property {
                 ", roomAmt=" + roomAmt +
                 "} " + super.toString();
     }
+
+    public PropertyType getType() {
+        return type;
+    }
+
+    public int getRoomAmt() {
+        return roomAmt;
+    }
 }

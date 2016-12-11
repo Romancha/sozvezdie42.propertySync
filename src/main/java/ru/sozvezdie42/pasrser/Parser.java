@@ -3,7 +3,8 @@ package ru.sozvezdie42.pasrser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.sozvezdie42.iproperty.components.Contacts;
+import ru.sozvezdie42.iproperty.components.Agent;
+import ru.sozvezdie42.iproperty.components.Company;
 import ru.sozvezdie42.iproperty.components.Finance;
 import ru.sozvezdie42.iproperty.components.Location;
 
@@ -15,7 +16,7 @@ import java.util.Arrays;
  */
 public class Parser {
 
-    public String getId(Document document) {
+    public String getRef(Document document) {
         Element pElement = document.getElementsByClass("navysearch").get(0);
         String elementText = pElement.child(0).text();
         String[] text = elementText.split(" / ");
@@ -23,7 +24,13 @@ public class Parser {
         return objectStr.substring(7);
     }
 
-    public String getDescription(Document document) {
+    public String getId(Document document) {
+        Element elementPrevBlock = document.getElementsByClass("prevblock").get(0);
+        Element elementP = elementPrevBlock.child(1).select("a").first();
+        return elementP.attr("oid");
+    }
+
+    public String getShortDescription(Document document) {
         Element pElement = document.getElementsByClass("domstor_object_head").get(0);
         return pElement.child(0).text();
     }
@@ -61,7 +68,9 @@ public class Parser {
         double[] coordinates = getCoordinates(document);
         System.out.println("COOR: " + coordinates[0] + ", " + coordinates[1]);
 
-        return new Location(locationStr ,street, city, district, house, coordinates);
+        Location location = new Location(street, city, district, house, coordinates);
+        location.setLocationStr(locationStr);
+        return location;
     }
 
     //TODO try change to google\yandex API
@@ -123,7 +132,7 @@ public class Parser {
         return elements.get(0).select("p").first().text();
     }
 
-    public Contacts getAgent(Document document) {
+    public Agent getAgent(Document document) {
         Element element = document.getElementsByClass("domstor_object_contacts").get(0);
         Elements pElements = element.select("p");
 
@@ -136,14 +145,24 @@ public class Parser {
 
         for (Element p : pElements) {
             String pText = p.text();
-            if (pText.contains(Contacts.ID_AGENT)) agentName = pText.replace(Contacts.ID_AGENT + " ", "");
-            if (pText.contains(Contacts.ID_COMPANY)) company = pText.replace(Contacts.ID_COMPANY + " ", "");
-            if (pText.contains(Contacts.ID_EMAIL)) email = pText.replace(Contacts.ID_EMAIL + " ", "");
-            if (pText.contains(Contacts.ID_TELEPHONE)) telephone = pText.replace(Contacts.ID_TELEPHONE + " ", "");
-            if (pText.contains(Contacts.ID_UPDATE)) update = pText.replace(Contacts.ID_UPDATE + " ", "");
-            if (pText.contains(Contacts.ID_WATCHERS)) watchers = Integer.parseInt(pText.replaceAll("\\D", ""));
+            if (pText.contains(Agent.ID_AGENT)) agentName = pText.replace(Agent.ID_AGENT + " ", "");
+            if (pText.contains(Agent.ID_COMPANY)) company = pText.replace(Agent.ID_COMPANY + " ", "");
+            if (pText.contains(Agent.ID_EMAIL)) email = pText.replace(Agent.ID_EMAIL + " ", "");
+            if (pText.contains(Agent.ID_TELEPHONE)) telephone = pText.replace(Agent.ID_TELEPHONE + " ", "");
+            if (pText.contains(Agent.ID_UPDATE)) update = pText.replace(Agent.ID_UPDATE + " ", "");
+            if (pText.contains(Agent.ID_WATCHERS)) watchers = Integer.parseInt(pText.replaceAll("\\D", ""));
         }
-        return new Contacts(agentName, telephone, email, company, update, watchers);
+
+        int companyId = Company.getCompanyId(company);
+
+        Agent agent = new Agent();
+        agent.setName(agentName);
+        agent.setTelephone(telephone);
+        agent.setEmail(email);
+        agent.setCompany(companyId);
+        agent.setUpdate(update);
+        agent.setWatchers(watchers);
+        return agent;
     }
 
 

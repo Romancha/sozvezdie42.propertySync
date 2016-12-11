@@ -7,9 +7,12 @@ import org.jsoup.select.Elements;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.PropertyFactory;
 import ru.sozvezdie42.iproperty.ResidentialProperty;
+import ru.sozvezdie42.iproperty.components.Agent;
+import ru.sozvezdie42.iproperty.components.Category;
 import ru.sozvezdie42.iproperty.components.OperationType;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -47,23 +50,24 @@ public class ParseServiceImpl implements ParseService {
 
         if (doc == null) return null;
 
-        ResidentialProperty property = (ResidentialProperty) new PropertyFactory().createProperty("residential");
+        ResidentialProperty property = (ResidentialProperty) new PropertyFactory().createProperty(Category.APARTMENT);
         ResidentialParser parser = new ResidentialParser();
-        String id = parser.getId(doc);
-        String description = parser.getDescription(doc);
+        String ref = parser.getRef(doc);
+        String shortDescription = parser.getShortDescription(doc);
 
-        property.setId(id);
-        property.setDescription(description);
+        property.setRef(ref);
+        property.setId(parser.getId(doc));
+        property.setDescription(parser.getComment(doc));
+        property.setShortDescription(shortDescription);
         property.setLocation(parser.getLocation(parser.getLocationStr(doc), doc));
+        property.setStorey(parser.getStorey(doc));
         property.setRoomAmt(parser.getRoomAmt(doc));
         property.setType(parser.getPropertyType(doc));
         property.setSize(parser.getSize(doc));
         property.setSpecifications(parser.getResidentialSpecifications(doc));
         property.setFinance(parser.getFinance(doc));
         property.setComment(parser.getComment(doc));
-        property.setContacts(parser.getAgent(doc));
-
-        System.out.println(property);
+        property.setAgent(parser.getAgent(doc));
 
         return property;
     }

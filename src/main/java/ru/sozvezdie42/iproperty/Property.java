@@ -8,14 +8,16 @@ import ru.sozvezdie42.iproperty.components.specifications.Specifications;
  */
 public class Property {
 
+    private int dbKey;
     private String id;
-    private String code;
+    private String ref;
     private OperationType operationType;
     private String description;
+    private String shortDescription;
 
     private Location location;
     private Storey storey;
-    private Contacts contacts;
+    private Agent agent;
     private Size size;
     private Specifications specifications;
 
@@ -26,8 +28,8 @@ public class Property {
         this.id = id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setRef(String ref) {
+        this.ref = ref;
     }
 
     public void setOperationType(OperationType operationType) {
@@ -42,8 +44,8 @@ public class Property {
         this.storey = storey;
     }
 
-    public void setContacts(Contacts contacts) {
-        this.contacts = contacts;
+    public void setAgent(Agent agent) {
+        this.agent = agent;
     }
 
     public void setSize(Size size) {
@@ -66,20 +68,82 @@ public class Property {
         this.description = description;
     }
 
+    public void setDbKey(int dbKey) {
+        this.dbKey = dbKey;
+    }
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+    }
+
+    public int getDbKey() {
+        return dbKey;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getRef() {
+        return ref;
+    }
+
+    public OperationType getOperationType() {
+        return operationType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public Storey getStorey() {
+        return storey;
+    }
+
+    public Agent getAgent() {
+        return agent;
+    }
+
+    public Size getSize() {
+        return size;
+    }
+
+    public Specifications getSpecifications() {
+        return specifications;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Finance getFinance() {
+        return finance;
+    }
+
     @Override
     public String toString() {
         return "Property{" +
-                "id='" + id + '\'' +
-                ", code='" + code + '\'' +
-                ", operationType='" + operationType + '\'' +
+                "dbKey=" + dbKey +
+                ", id='" + id + '\'' +
+                ", ref='" + ref + '\'' +
+                ", operationType=" + operationType +
                 ", description='" + description + '\'' +
+                ", shortDescription='" + shortDescription + '\'' +
                 ", location=" + location +
                 ", storey=" + storey +
-                ", agent=" + contacts +
+                ", agent=" + agent +
                 ", size=" + size +
                 ", specifications=" + specifications +
                 ", comment='" + comment + '\'' +
-                ", price=" + finance +
+                ", finance=" + finance +
                 '}';
     }
 }
