@@ -18,49 +18,6 @@ public class AgentDAOImpl implements AgentDAO {
     private Connection connection;
 
     @Override
-    public Agent getAgent(int dbAgentId) {
-
-        String query = "SELECT * FROM aj2or_iproperty_agents WHERE id = ?;";
-        Agent agent = null;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, dbAgentId);
-            ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-
-            agent = new Agent();
-            String name = rs.getString("fname");
-            String lastName = rs.getString("lname");
-            String telephone = rs.getString("phone");
-            String email = rs.getString("email");
-
-            agent.setName(name + " " + lastName);
-            agent.setTelephone(telephone);
-            agent.setEmail(email);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-        return agent;
-    }
-
-    @Override
-    public boolean createAgent(Agent agent) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteAgent(Agent agent) {
-        return false;
-    }
-
-    @Override
-    public boolean updateAgent(Agent agent) {
-        return false;
-    }
-
-    @Override
     public boolean updatePropAgentBonds(Property property) {
         String query = "UPDATE aj2or_iproperty_agentmid SET agent_id = ? WHERE prop_id = ?;";
 

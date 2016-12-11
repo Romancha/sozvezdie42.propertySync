@@ -3,13 +3,13 @@ package ru.sozvezdie42.pasrser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.sozvezdie42.iproperty.components.PropertyType;
-import ru.sozvezdie42.iproperty.components.ResidentialSize;
-import ru.sozvezdie42.iproperty.components.Storey;
+import ru.sozvezdie42.iproperty.components.*;
 import ru.sozvezdie42.iproperty.components.specifications.Balcony;
 import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
 import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
 import ru.sozvezdie42.iproperty.components.specifications.State;
+
+import java.util.ArrayList;
 
 /**
  * Created by Roman on 12/5/2016.

@@ -49,19 +49,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             }
         }
 
-        Balcony balcony = specifications.getBalcony();
-        StringBuilder balconyDescription = new StringBuilder();
-        if (balcony != null) {
-            balconyDescription = balconyDescription.append(balcony.getDecoration());
-            int amtBalcony = balcony.getBalconyAmt();
-            int amtLoggie = balcony.getLoggiaAmt();
-            if (amtBalcony > 0) {
-                balconyDescription.append("Балконов: ").append(amtBalcony);
-            }
-            if (amtLoggie > 0) {
-                balconyDescription.append("Лоджий: ").append(amtLoggie);
-            }
-        }
+        String balconyDescription = specifications.getBalcony().getDescription();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, AdapterUtils.prepare(prop.getRef()));
@@ -94,7 +82,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setString(22, AdapterUtils.prepare(type.getLayout()));
             preparedStatement.setString(23, AdapterUtils.prepare(type.getMaterial()));
             preparedStatement.setString(24, AdapterUtils.prepare(bathroomDescription.toString()));
-            preparedStatement.setString(25, AdapterUtils.prepare(balconyDescription.toString()));
+            preparedStatement.setString(25, AdapterUtils.prepare(balconyDescription));
             preparedStatement.setInt(26, 1);//Опубликовано
             preparedStatement.setInt(27, 1);
 
@@ -165,19 +153,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             }
         }
 
-        Balcony balcony = specifications.getBalcony();
-        StringBuilder balconyDescription = new StringBuilder();
-        if (balcony != null) {
-            balconyDescription = balconyDescription.append(balcony.getDecoration());
-            int amtBalcony = balcony.getBalconyAmt();
-            int amtLoggie = balcony.getLoggiaAmt();
-            if (amtBalcony > 0) {
-                balconyDescription.append("Балконов: ").append(amtBalcony);
-            }
-            if (amtLoggie > 0) {
-                balconyDescription.append("Лоджий: ").append(amtLoggie);
-            }
-        }
+        String balconyDescription = specifications.getBalcony().getDescription();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, 0);
@@ -210,7 +186,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setString(21, AdapterUtils.prepare(type.getLayout()));
             preparedStatement.setString(22, AdapterUtils.prepare(type.getMaterial()));
             preparedStatement.setString(23, AdapterUtils.prepare(bathroomDescription.toString()));
-            preparedStatement.setString(24, AdapterUtils.prepare(balconyDescription.toString()));
+            preparedStatement.setString(24, AdapterUtils.prepare(balconyDescription));
             preparedStatement.setInt(25, 1);//Опубликовано
             preparedStatement.setInt(26, 1);
 

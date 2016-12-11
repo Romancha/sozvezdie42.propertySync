@@ -13,7 +13,7 @@ public interface ParseService {
 
     public Map<String, ArrayList<Property>> parseCompany (String companyId);
 
-    public ArrayList<Property> parseResidentialPropertyFromCompany(String companyId);
+    public ArrayList<Property> parseFlatSaleFromCompany(String companyId);
 
 
 }

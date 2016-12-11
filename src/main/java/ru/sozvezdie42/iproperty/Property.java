@@ -3,6 +3,8 @@ package ru.sozvezdie42.iproperty;
 import ru.sozvezdie42.iproperty.components.*;
 import ru.sozvezdie42.iproperty.components.specifications.Specifications;
 
+import java.util.ArrayList;
+
 /**
  * Created by Roman on 12/5/2016.
  */
@@ -11,7 +13,7 @@ public class Property {
     private int dbKey;
     private String id;
     private String ref;
-    private OperationType operationType;
+    private String operationType;
     private String description;
     private String shortDescription;
 
@@ -23,6 +25,7 @@ public class Property {
 
     private String comment;
     private Finance finance;
+    private String category;
 
     public void setId(String id) {
         this.id = id;
@@ -32,7 +35,7 @@ public class Property {
         this.ref = ref;
     }
 
-    public void setOperationType(OperationType operationType) {
+    public void setOperationType(String operationType) {
         this.operationType = operationType;
     }
 
@@ -92,7 +95,7 @@ public class Property {
         return ref;
     }
 
-    public OperationType getOperationType() {
+    public String getOperationType() {
         return operationType;
     }
 
@@ -128,9 +131,14 @@ public class Property {
         return finance;
     }
 
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
         return "Property{" +
+
                 "dbKey=" + dbKey +
                 ", id='" + id + '\'' +
                 ", ref='" + ref + '\'' +

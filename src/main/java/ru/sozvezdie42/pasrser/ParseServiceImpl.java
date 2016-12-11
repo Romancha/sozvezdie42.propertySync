@@ -29,6 +29,9 @@ public class ParseServiceImpl implements ParseService {
         switch (operationType) {
             case OperationType.RESIDENTIAL_SALE:
                 property = parseResidentialProperty(propertyUrl);
+                if (property != null) {
+                    property.setOperationType(operationType);
+                }
                 break;
         }
         return property;
@@ -78,7 +81,7 @@ public class ParseServiceImpl implements ParseService {
     }
 
     @Override
-    public ArrayList<Property> parseResidentialPropertyFromCompany(String companyId) {
+    public ArrayList<Property> parseFlatSaleFromCompany(String companyId) {
         final String ID_OBJECT = "object/";
 
         String parseUrl = "http://sibestate.ru/" + companyId + "/flat/sale";
@@ -107,7 +110,8 @@ public class ParseServiceImpl implements ParseService {
 
             String propUrl = "http://sibestate.ru/flat/sale/" + code;
             System.out.println(propUrl);
-            propList.add(parseProperty(propUrl));
+            Property property = parseProperty(propUrl);
+            propList.add(property);
         }
         return propList;
     }

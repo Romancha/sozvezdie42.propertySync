@@ -12,11 +12,27 @@ public class Balcony {
     private int balconyAmt;
     private int loggiaAmt;
     private String decoration;
+    private String description;
 
     public Balcony(int balconyAmt, int loggiaAmt, String decoration) {
         this.balconyAmt = balconyAmt;
         this.loggiaAmt = loggiaAmt;
         this.decoration = decoration;
+    }
+
+    public String getDescription() {
+        StringBuilder balconyDescription = new StringBuilder();
+        balconyDescription = balconyDescription.append(this.getDecoration());
+        int amtBalcony = this.getBalconyAmt();
+        int amtLoggie = this.getLoggiaAmt();
+        if (amtBalcony > 0) {
+            balconyDescription.append("Балконов: ").append(amtBalcony);
+        }
+        if (amtLoggie > 0) {
+            balconyDescription.append("Лоджий: ").append(amtLoggie);
+        }
+
+        return balconyDescription.toString();
     }
 
     public int getBalconyAmt() {
