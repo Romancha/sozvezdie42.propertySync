@@ -117,7 +117,6 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
                 agentDAO.createPropAgentBonds(property);
             }
 
-            //TODO develop auto-detection category
             CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
             categoryDAO.executePropCategory(property);
 
@@ -304,6 +303,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
     @Override
     public boolean propertyExists(Property property) {
 
+        //TODO: replace identification from ref to id
         String query = "SELECT * FROM aj2or_iproperty WHERE mls_id=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
