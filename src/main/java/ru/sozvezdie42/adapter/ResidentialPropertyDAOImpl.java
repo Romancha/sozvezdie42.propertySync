@@ -120,6 +120,9 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
             categoryDAO.executePropCategory(property);
 
+            ImageDAO imageDAO = new ImageDAOImpl(connection);
+            imageDAO.deleteImages(property);
+            imageDAO.executeImages(property);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -218,6 +221,10 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
             categoryDAO.executePropCategory(property);
+
+            ImageDAO imageDAO = new ImageDAOImpl(connection);
+            imageDAO.deleteImages(property);
+            imageDAO.executeImages(property);
         } catch (SQLException e) {
             e.printStackTrace();
         }

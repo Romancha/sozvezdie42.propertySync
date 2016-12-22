@@ -77,6 +77,9 @@ public class ParseServiceImpl implements ParseService {
         property.setComment(parser.getComment(doc));
         property.setAgent(parser.getAgent(doc));
 
+        ArrayList<Image> images = new ImageParseServiceImpl().parseImages(propertyUrl);
+        property.setImages(images);
+
         return property;
     }
 
@@ -129,10 +132,5 @@ public class ParseServiceImpl implements ParseService {
 
         });
         return result;
-    }
-
-    @Override
-    public ArrayList<Image> parseImages(String propUrl) {
-        return null;
     }
 }

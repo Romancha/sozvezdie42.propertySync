@@ -3,6 +3,7 @@ package ru.sozvezdie42.iproperty;
 import ru.sozvezdie42.iproperty.components.*;
 import ru.sozvezdie42.iproperty.components.specifications.Specifications;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class Property {
     private Storey storey;
     private Agent agent;
     private Size size;
+    private ArrayList<Image> images;
     private Specifications specifications;
 
     private String comment;
@@ -137,6 +139,14 @@ public class Property {
 
     public List<String> getCategory() {
         return category;
+    }
+
+    public ArrayList<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(ArrayList<Image> images) {
+        this.images = images;
     }
 
     @Override
