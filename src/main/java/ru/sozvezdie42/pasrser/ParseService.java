@@ -1,8 +1,10 @@
 package ru.sozvezdie42.pasrser;
 
 import ru.sozvezdie42.iproperty.Property;
+import ru.sozvezdie42.iproperty.components.Image;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,9 +15,9 @@ public interface ParseService {
 
     public Map<String, ArrayList<Property>> parseCompany (String companyId);
 
-    public ArrayList<Property> parseFlatSaleFromCompany(String companyId);
+    public HashMap<String, ArrayList<Property>> parseResidentialFromCompany(String companyId);
 
-    public ArrayList<Property> parseFlatExchangeFromCompany(String companyId);
+    public ArrayList<Image> parseImages(String propUrl);
 
 
 }

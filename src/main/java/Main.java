@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Roman on 12/5/2016.
@@ -15,26 +16,18 @@ public class Main {
     public static void main(String[] args) throws IOException, SQLException {
 
 
-        ArrayList<Property> propExchange = new ParseServiceImpl().parseFlatExchangeFromCompany("sozvezdie42");
-        System.out.println(propExchange);
+        HashMap<String, ArrayList<Property>> props = new ParseServiceImpl().parseResidentialFromCompany("sozvezdie42");
+        System.out.println(props);
 
-
-        /*ArrayList<Property> propList  = new ParseServiceImpl().parseFlatSaleFromCompany("sozvezdie42");
-        System.out.println(propList);*/
 
         MytSqlDaoFactory factory = new MytSqlDaoFactory();
-
         Connection connection = factory.getConnection();
-
-        ParseService parseService = new ParseServiceImpl();
         PropertyDAO propertyDAO = new ResidentialPropertyDAOImpl(connection);
-        //System.out.println("PROP REF: " + prop.getRef() + " - " + propertyDAO.propertyExists(prop));
 
-        //propList.forEach(propertyDAO::executeProperty);
-        propExchange.forEach(propertyDAO::executeProperty);
+        props.forEach((k, v) -> v.forEach(propertyDAO::executeProperty));
 
         connection.close();
-        //Property property = parseService.parseProperty("http://sibestate.ru/flat/sale/89120000187");
+
 
 
 

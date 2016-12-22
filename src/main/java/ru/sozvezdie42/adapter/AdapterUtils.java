@@ -28,6 +28,9 @@ public class AdapterUtils {
                 categoryList.add(Category.APARTMENT);
                 categoryList.add(Category.SWAP);
                 return categoryList;
+            case OperationType.RESIDENTIAL_NEW:
+                categoryList.add(Category.NEW);
+                return categoryList;
         }
         return null;
     }

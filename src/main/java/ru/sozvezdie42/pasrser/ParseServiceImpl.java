@@ -9,9 +9,12 @@ import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.PropertyFactory;
 import ru.sozvezdie42.iproperty.ResidentialProperty;
 import ru.sozvezdie42.iproperty.components.Category;
+import ru.sozvezdie42.iproperty.components.Image;
 import ru.sozvezdie42.iproperty.components.OperationType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,6 +31,7 @@ public class ParseServiceImpl implements ParseService {
         switch (operationType) {
             case OperationType.RESIDENTIAL_SALE:
             case OperationType.RESIDENTIAL_EXCHANGE:
+            case OperationType.RESIDENTIAL_NEW:
                 property = parseResidentialProperty(propertyUrl);
                 if (property != null) {
                     property.setOperationType(operationType);
@@ -82,74 +86,53 @@ public class ParseServiceImpl implements ParseService {
     }
 
     @Override
-    public ArrayList<Property> parseFlatSaleFromCompany(String companyId) {
+    public HashMap<String, ArrayList<Property>> parseResidentialFromCompany(String companyId) {
+        HashMap<String, ArrayList<Property>> result = new HashMap<>();
         final String ID_OBJECT = "object/";
 
-        String parseUrl = "http://sibestate.ru/" + companyId + "/flat/sale";
+        List<String> categoryLinks = new ArrayList<>();
+        categoryLinks.add(OperationType.RESIDENTIAL_SALE);
+        categoryLinks.add(OperationType.RESIDENTIAL_EXCHANGE);
+        categoryLinks.add(OperationType.RESIDENTIAL_NEW);
 
-        Document doc = null;
+        categoryLinks.forEach(categoryLink -> {
+            String parseUrl = "http://sibestate.ru/" + companyId + "/" + categoryLink;
 
-        try {
-            doc = Jsoup.connect(parseUrl).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            Document doc = null;
 
-        if (doc == null) return null;
+            try {
+                doc = Jsoup.connect(parseUrl).get();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        Element tableElement = doc.getElementsByClass("table-responsive").get(0);
-        Element tableBody = tableElement.select("tbody").get(0);
-        Elements tableElements = tableBody.select("tr");
+            if (doc != null) {
+                Element tableElement = doc.getElementsByClass("table-responsive").get(0);
+                Element tableBody = tableElement.select("tbody").get(0);
+                Elements tableElements = tableBody.select("tr");
 
-        ArrayList<Property> propList = new ArrayList<>();
+                ArrayList<Property> propList = new ArrayList<>();
 
-        for (Element element : tableElements) {
-            Elements ref = element.getElementsByClass("domstor_code");
-            String href = ref.select("a").first().attr("href");
-            int codeStartIndex = href.indexOf(ID_OBJECT);
-            String code = href.substring(codeStartIndex + ID_OBJECT.length());
+                for (Element element : tableElements) {
+                    Elements ref = element.getElementsByClass("domstor_code");
+                    String href = ref.select("a").first().attr("href");
+                    int codeStartIndex = href.indexOf(ID_OBJECT);
+                    String code = href.substring(codeStartIndex + ID_OBJECT.length());
 
-            String propUrl = "http://sibestate.ru/flat/sale/" + code;
-            System.out.println(propUrl);
-            Property property = parseProperty(propUrl);
-            propList.add(property);
-        }
-        return propList;
+                    String propUrl = "http://sibestate.ru/" + categoryLink + "/" + code;
+                    System.out.println(propUrl);
+                    Property property = parseProperty(propUrl);
+                    propList.add(property);
+                }
+                result.put(categoryLink, propList);
+            }
+
+        });
+        return result;
     }
 
     @Override
-    public ArrayList<Property> parseFlatExchangeFromCompany(String companyId) {
-        final String ID_OBJECT = "object/";
-
-        String parseUrl = "http://sibestate.ru/" + companyId + "/flat/exchange";
-
-        Document doc = null;
-
-        try {
-            doc = Jsoup.connect(parseUrl).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (doc == null) return null;
-
-        Element tableElement = doc.getElementsByClass("table-responsive").get(0);
-        Element tableBody = tableElement.select("tbody").get(0);
-        Elements tableElements = tableBody.select("tr");
-
-        ArrayList<Property> propList = new ArrayList<>();
-
-        for (Element element : tableElements) {
-            Elements ref = element.getElementsByClass("domstor_code");
-            String href = ref.select("a").first().attr("href");
-            int codeStartIndex = href.indexOf(ID_OBJECT);
-            String code = href.substring(codeStartIndex + ID_OBJECT.length());
-
-            String propUrl = "http://sibestate.ru/flat/exchange/" + code;
-            System.out.println(propUrl);
-            Property property = parseProperty(propUrl);
-            propList.add(property);
-        }
-        return propList;
+    public ArrayList<Image> parseImages(String propUrl) {
+        return null;
     }
 }
