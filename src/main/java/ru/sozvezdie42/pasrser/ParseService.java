@@ -15,5 +15,7 @@ public interface ParseService {
 
     public ArrayList<Property> parseFlatSaleFromCompany(String companyId);
 
+    public ArrayList<Property> parseFlatExchangeFromCompany(String companyId);
+
 
 }

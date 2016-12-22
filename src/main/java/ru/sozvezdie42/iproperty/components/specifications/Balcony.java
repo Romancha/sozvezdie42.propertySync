@@ -29,7 +29,7 @@ public class Balcony {
             balconyDescription.append("Балконов: ").append(amtBalcony);
         }
         if (amtLoggie > 0) {
-            balconyDescription.append("Лоджий: ").append(amtLoggie);
+            balconyDescription.append(" Лоджий: ").append(amtLoggie);
         }
 
         return balconyDescription.toString();

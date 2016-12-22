@@ -119,7 +119,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             //TODO develop auto-detection category
             CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
-            categoryDAO.fillPropCategoryBonds(propertyDAO.getPropertyDbKey(property), 2);
+            categoryDAO.executePropCategory(property);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -216,6 +216,9 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             AgentDAO agentDAO = new AgentDAOImpl(connection);
             agentDAO.executeAgent(property);
+
+            CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
+            categoryDAO.executePropCategory(property);
         } catch (SQLException e) {
             e.printStackTrace();
         }

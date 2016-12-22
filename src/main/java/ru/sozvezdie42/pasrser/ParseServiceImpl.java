@@ -4,15 +4,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import ru.sozvezdie42.adapter.AdapterUtils;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.PropertyFactory;
 import ru.sozvezdie42.iproperty.ResidentialProperty;
-import ru.sozvezdie42.iproperty.components.Agent;
 import ru.sozvezdie42.iproperty.components.Category;
 import ru.sozvezdie42.iproperty.components.OperationType;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,9 +27,11 @@ public class ParseServiceImpl implements ParseService {
 
         switch (operationType) {
             case OperationType.RESIDENTIAL_SALE:
+            case OperationType.RESIDENTIAL_EXCHANGE:
                 property = parseResidentialProperty(propertyUrl);
                 if (property != null) {
                     property.setOperationType(operationType);
+                    property.setCategory(AdapterUtils.getPropertyCategoryByOperationType(operationType));
                 }
                 break;
         }
@@ -109,6 +110,42 @@ public class ParseServiceImpl implements ParseService {
             String code = href.substring(codeStartIndex + ID_OBJECT.length());
 
             String propUrl = "http://sibestate.ru/flat/sale/" + code;
+            System.out.println(propUrl);
+            Property property = parseProperty(propUrl);
+            propList.add(property);
+        }
+        return propList;
+    }
+
+    @Override
+    public ArrayList<Property> parseFlatExchangeFromCompany(String companyId) {
+        final String ID_OBJECT = "object/";
+
+        String parseUrl = "http://sibestate.ru/" + companyId + "/flat/exchange";
+
+        Document doc = null;
+
+        try {
+            doc = Jsoup.connect(parseUrl).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (doc == null) return null;
+
+        Element tableElement = doc.getElementsByClass("table-responsive").get(0);
+        Element tableBody = tableElement.select("tbody").get(0);
+        Elements tableElements = tableBody.select("tr");
+
+        ArrayList<Property> propList = new ArrayList<>();
+
+        for (Element element : tableElements) {
+            Elements ref = element.getElementsByClass("domstor_code");
+            String href = ref.select("a").first().attr("href");
+            int codeStartIndex = href.indexOf(ID_OBJECT);
+            String code = href.substring(codeStartIndex + ID_OBJECT.length());
+
+            String propUrl = "http://sibestate.ru/flat/exchange/" + code;
             System.out.println(propUrl);
             Property property = parseProperty(propUrl);
             propList.add(property);
