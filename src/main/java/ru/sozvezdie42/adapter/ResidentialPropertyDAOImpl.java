@@ -15,6 +15,8 @@ import java.util.List;
  */
 public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
+    private static final Integer SYNC_USER_ID = 57;
+
     private Connection connection;
 
 
@@ -102,8 +104,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setInt(39, prop.getRoomAmt());
             preparedStatement.setDate(40, currentDate);
             preparedStatement.setDate(41, currentDate);
-            preparedStatement.setInt(42, 55);
-            preparedStatement.setInt(43, 55);
+            preparedStatement.setInt(42, SYNC_USER_ID);
+            preparedStatement.setInt(43, SYNC_USER_ID);
             preparedStatement.setInt(44, 1);
 
             preparedStatement.executeUpdate();
@@ -206,8 +208,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
             preparedStatement.setInt(37, prop.getRoomAmt());
             preparedStatement.setDate(38, currentDate);
-            preparedStatement.setInt(39, 55);
-            preparedStatement.setInt(40, 55);
+            preparedStatement.setInt(39, SYNC_USER_ID);
+            preparedStatement.setInt(40, SYNC_USER_ID);
             preparedStatement.setInt(41, 1);
 
             PropertyDAO propertyDAO = new ResidentialPropertyDAOImpl(connection);
@@ -309,12 +311,10 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
     @Override
     public boolean propertyExists(Property property) {
-
-        //TODO: replace identification from ref to id
-        String query = "SELECT * FROM aj2or_iproperty WHERE mls_id=?";
+        String query = "SELECT * FROM aj2or_iproperty WHERE alias=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, property.getRef());
+            preparedStatement.setString(1, property.getId());
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return true;
