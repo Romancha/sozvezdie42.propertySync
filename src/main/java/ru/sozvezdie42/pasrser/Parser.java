@@ -40,39 +40,6 @@ public class Parser {
         return element.select("p").first().text();
     }
 
-    public Location getLocation (String locationStr, Document document) {
-        String[] locationElements = locationStr.split(",");
-
-        String city = "";
-        String street = "";
-        String house = "";
-        String district = "";
-
-        for (int i = 0; i < locationElements.length; i ++) {
-            switch (i) {
-                case 0:
-                    street = locationElements[i];
-                    break;
-                case 1:
-                    house = locationElements[i].replaceAll("\\s", "");
-                    break;
-                case 2:
-                    district = locationElements[i].replaceAll("\\s", "");
-                    break;
-                case 3:
-                    city = locationElements[i].replaceAll("\\s", "");
-                    break;
-            }
-        }
-
-        double[] coordinates = getCoordinates(document);
-        System.out.println("COOR: " + coordinates[0] + ", " + coordinates[1]);
-
-        Location location = new Location(street, city, district, house, coordinates);
-        location.setLocationStr(locationStr);
-        return location;
-    }
-
     //TODO try change to google\yandex API
     public double[] getCoordinates (Document document) {
         double[] coordinates = new double[]{0, 0};

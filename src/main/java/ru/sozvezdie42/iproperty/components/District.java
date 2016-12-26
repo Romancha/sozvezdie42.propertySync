@@ -39,6 +39,7 @@ public class District {
     }
 
     public static int getId(String district) {
+        if (district == null) return 0;
         switch (district) {
             case LN:
                 return 1;

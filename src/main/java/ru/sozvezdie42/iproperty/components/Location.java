@@ -27,6 +27,13 @@ public class Location {
         this.coordinates = coordinates;
     }
 
+    public Location(String street) {
+        this.street = street;
+    }
+
+    public Location() {
+    }
+
     public String getLocationStr() {
         return locationStr;
     }
@@ -76,6 +83,12 @@ public class Location {
     }
 
     public double[] getCoordinates() {
+        if (coordinates == null) {
+            double[] def = new double[2];
+            def[0] = 0.0;
+            def[1] = 0.0;
+            return def;
+        }
         return coordinates;
     }
 

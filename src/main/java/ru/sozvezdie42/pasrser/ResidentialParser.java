@@ -50,6 +50,39 @@ public class ResidentialParser extends Parser {
         return new PropertyType(apartment, layout, material);
     }
 
+    public Location getLocation (String locationStr, Document document) {
+        String[] locationElements = locationStr.split(",");
+
+        String city = "";
+        String street = "";
+        String house = "";
+        String district = "";
+
+        for (int i = 0; i < locationElements.length; i ++) {
+            switch (i) {
+                case 0:
+                    street = locationElements[i];
+                    break;
+                case 1:
+                    house = locationElements[i].replaceAll("\\s", "");
+                    break;
+                case 2:
+                    district = locationElements[i].replaceAll("\\s", "");
+                    break;
+                case 3:
+                    city = locationElements[i].replaceAll("\\s", "");
+                    break;
+            }
+        }
+
+        double[] coordinates = getCoordinates(document);
+        System.out.println("COOR: " + coordinates[0] + ", " + coordinates[1]);
+
+        Location location = new Location(street, city, district, house, coordinates);
+        location.setLocationStr(locationStr);
+        return location;
+    }
+
     public ResidentialSize getSize(Document document) {
         Elements elements = document.getElementsByClass("domstor_object_size");
         Elements sizeElements = elements.select("tr");
@@ -133,17 +166,26 @@ public class ResidentialParser extends Parser {
     }
 
     public Storey getStorey(Document document) {
-        Element element = document.getElementsByClass("domstor_object_floor").first();
-        Element pElement = element.select("p").first();
-
-        String storeyStr = pElement.text();
-        String[] splitStoreys = storeyStr.split("/");
-        int storey = Integer.parseInt(splitStoreys[0]);
-        int maxStorey = Integer.parseInt(splitStoreys[1]);
-
         Storey st = new Storey();
-        st.setStorey(storey);
-        st.setMaxStorey(maxStorey);
+
+        Element element = document.getElementsByClass("domstor_object_floor").first();
+
+        if (element !=null) {
+            Elements pElements = element.select("p");
+
+            if (pElements != null && !pElements.isEmpty()) {
+                Element pElement = pElements.first();
+                String storeyStr = pElement.text();
+                String[] splitStoreys = storeyStr.split("/");
+                int storey = Integer.parseInt(splitStoreys[0]);
+                int maxStorey = Integer.parseInt(splitStoreys[1]);
+
+                st.setStorey(storey);
+                st.setMaxStorey(maxStorey);
+            }
+        }
+
+
 
         return st;
     }

@@ -31,6 +31,16 @@ public class AdapterUtils {
             case OperationType.RESIDENTIAL_NEW:
                 categoryList.add(Category.NEW);
                 return categoryList;
+            case OperationType.HOUSE_SALE:
+                categoryList.add(Category.COTTAGE);
+                return categoryList;
+            case OperationType.HOUSE_EXCHANGE:
+                categoryList.add(Category.COTTAGE);
+                categoryList.add(Category.SWAP);
+                return categoryList;
+            case OperationType.GARAGE_SALE:
+                categoryList.add(Category.GARAGE);
+                return categoryList;
         }
         return null;
     }
