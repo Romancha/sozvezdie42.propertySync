@@ -36,22 +36,36 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
                         "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        ResidentialProperty prop = (ResidentialProperty) property;
+        Property prop = property;
+
         Location location = prop.getLocation();
-        ResidentialSpecifications specifications = (ResidentialSpecifications) prop.getSpecifications();
-        ResidentialSize size = (ResidentialSize) prop.getSize();
-        PropertyType type = prop.getType();
 
-        Bathroom bathroom = specifications.getBathroom();
+        ResidentialSize size = null;
+        PropertyType type = null;
+        ResidentialSpecifications specifications = null;
+        Bathroom bathroom = null;
         StringBuilder bathroomDescription = new StringBuilder();
-        if (bathroom != null) {
-            bathroomDescription.append(bathroom.getType());
-            if (bathroom.getAmt() > 0) {
-                bathroomDescription.append(" Количество: ").append(bathroom.getAmt());
-            }
-        }
+        String balconyDescription = "";
+        State state = null;
+        int roomAmt = 0;
 
-        String balconyDescription = specifications.getBalcony().getDescription();
+        if (property instanceof ResidentialProperty) {
+            ResidentialProperty resProp = (ResidentialProperty) property;
+            type = resProp.getType();
+            specifications = (ResidentialSpecifications) resProp.getSpecifications();
+            bathroom = specifications.getBathroom();
+
+            if (bathroom != null) {
+                bathroomDescription.append(bathroom.getType());
+                if (bathroom.getAmt() > 0) {
+                    bathroomDescription.append(" Количество: ").append(bathroom.getAmt());
+                }
+            }
+
+            balconyDescription = specifications.getBalcony().getDescription();
+            roomAmt = resProp.getRoomAmt();
+            size = (ResidentialSize) prop.getSize();
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, AdapterUtils.prepare(prop.getRef()));
@@ -71,18 +85,39 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setDouble(15, location.getCoordinates()[0]);
             preparedStatement.setDouble(16, location.getCoordinates()[1]);
             preparedStatement.setDouble(17, prop.getFinance().getPrice());
-            preparedStatement.setInt(18, prop.getStorey().getStorey());
-            preparedStatement.setInt(19, (int) size.getTotal());
 
-            State state = specifications.getState();
+            int storey = 0;
+            if (prop.getStorey() != null) {
+                storey = prop.getStorey().getStorey();
+            }
+            preparedStatement.setInt(18, storey);
+
+            int sizeInt = 0;
+            if (size != null) {
+                sizeInt = (int) size.getTotal();
+            }
+            preparedStatement.setInt(19, sizeInt);
+
+            if (specifications != null) {
+                state = specifications.getState();
+            }
             String st = "";
             if (state != null) {
                 st = state.getDescription();
             }
             preparedStatement.setString(20, st);
-            preparedStatement.setString(21, AdapterUtils.prepare(type.getType()));
-            preparedStatement.setString(22, AdapterUtils.prepare(type.getLayout()));
-            preparedStatement.setString(23, AdapterUtils.prepare(type.getMaterial()));
+
+            String typeStr = "";
+            String layout = "";
+            String material = "";
+            if (type != null) {
+                typeStr = type.getType();
+                layout = type.getLayout();
+                material = type.getMaterial();
+            }
+            preparedStatement.setString(21, typeStr);
+            preparedStatement.setString(22, layout);
+            preparedStatement.setString(23, material);
             preparedStatement.setString(24, AdapterUtils.prepare(bathroomDescription.toString()));
             preparedStatement.setString(25, AdapterUtils.prepare(balconyDescription));
             preparedStatement.setInt(26, 1);//Опубликовано
@@ -101,7 +136,9 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
             preparedStatement.setDate(38, currentDate);
-            preparedStatement.setInt(39, prop.getRoomAmt());
+
+            preparedStatement.setInt(39, roomAmt);
+
             preparedStatement.setDate(40, currentDate);
             preparedStatement.setDate(41, currentDate);
             preparedStatement.setInt(42, SYNC_USER_ID);
@@ -142,22 +179,36 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
                 "listing_info = ?, beds = ?, modified = ?, created_by = ?, modified_by = ?, access = ?" +
                 " WHERE id = ?;";
 
-        ResidentialProperty prop = (ResidentialProperty) property;
+        Property prop = property;
+
         Location location = prop.getLocation();
-        ResidentialSpecifications specifications = (ResidentialSpecifications) prop.getSpecifications();
-        ResidentialSize size = (ResidentialSize) prop.getSize();
-        PropertyType type = prop.getType();
 
-        Bathroom bathroom = specifications.getBathroom();
+        ResidentialSize size = null;
+        PropertyType type = null;
+        ResidentialSpecifications specifications = null;
+        Bathroom bathroom = null;
         StringBuilder bathroomDescription = new StringBuilder();
-        if (bathroom != null) {
-            bathroomDescription.append(bathroom.getType());
-            if (bathroom.getAmt() > 0) {
-                bathroomDescription.append(" Количество: ").append(bathroom.getAmt());
-            }
-        }
+        String balconyDescription = "";
+        State state = null;
+        int roomAmt = 0;
 
-        String balconyDescription = specifications.getBalcony().getDescription();
+        if (property instanceof ResidentialProperty) {
+            ResidentialProperty resProp = (ResidentialProperty) property;
+            type = resProp.getType();
+            specifications = (ResidentialSpecifications) resProp.getSpecifications();
+            bathroom = specifications.getBathroom();
+
+            if (bathroom != null) {
+                bathroomDescription.append(bathroom.getType());
+                if (bathroom.getAmt() > 0) {
+                    bathroomDescription.append(" Количество: ").append(bathroom.getAmt());
+                }
+            }
+
+            balconyDescription = specifications.getBalcony().getDescription();
+            roomAmt = resProp.getRoomAmt();
+            size = (ResidentialSize) prop.getSize();
+        }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, 0);
@@ -176,19 +227,40 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setDouble(14, location.getCoordinates()[0]);
             preparedStatement.setDouble(15, location.getCoordinates()[1]);
             preparedStatement.setDouble(16, prop.getFinance().getPrice());
-            preparedStatement.setInt(17, prop.getStorey().getStorey());
-            preparedStatement.setInt(18, (int) size.getTotal());
 
+            int storey = 0;
+            if (prop.getStorey() != null) {
+                storey = prop.getStorey().getStorey();
+            }
+            preparedStatement.setInt(17, storey);
 
-            State state = specifications.getState();
+            int sizeInt = 0;
+            if (size != null) {
+                sizeInt = (int) size.getTotal();
+            }
+            preparedStatement.setInt(18, sizeInt);
+
+            if (specifications != null) {
+                state = specifications.getState();
+            }
             String st = "";
             if (state != null) {
                 st = state.getDescription();
             }
             preparedStatement.setString(19, st);
-            preparedStatement.setString(20, AdapterUtils.prepare(type.getType()));
-            preparedStatement.setString(21, AdapterUtils.prepare(type.getLayout()));
-            preparedStatement.setString(22, AdapterUtils.prepare(type.getMaterial()));
+
+            String typeStr = "";
+            String layout = "";
+            String material = "";
+            if (type != null) {
+                typeStr = type.getType();
+                layout = type.getLayout();
+                material = type.getMaterial();
+            }
+            preparedStatement.setString(20, typeStr);
+            preparedStatement.setString(21, layout);
+            preparedStatement.setString(22, material);
+
             preparedStatement.setString(23, AdapterUtils.prepare(bathroomDescription.toString()));
             preparedStatement.setString(24, AdapterUtils.prepare(balconyDescription));
             preparedStatement.setInt(25, 1);//Опубликовано
@@ -206,7 +278,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setString(36, "");//Default
 
             Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
-            preparedStatement.setInt(37, prop.getRoomAmt());
+            preparedStatement.setInt(37, roomAmt);
             preparedStatement.setDate(38, currentDate);
             preparedStatement.setInt(39, SYNC_USER_ID);
             preparedStatement.setInt(40, SYNC_USER_ID);
