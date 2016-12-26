@@ -14,7 +14,7 @@ public class PropertyFactory {
         if (categories.contains(Category.APARTMENT) || categories.contains(Category.KGT)
                 || categories.contains(Category.NEW) || categories.contains(Category.COTTAGE)) {
             property = new ResidentialProperty();
-        } else if(categories.contains(Category.GARAGE)) {
+        } else if(categories.contains(Category.GARAGE) || categories.contains(Category.COUNTRY_HOUSE)) {
             property = new Property();
         }
 

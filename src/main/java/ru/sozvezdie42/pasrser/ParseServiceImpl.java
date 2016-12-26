@@ -40,6 +40,7 @@ public class ParseServiceImpl implements ParseService {
                 }
                 break;
             case OperationType.GARAGE_SALE:
+            case OperationType.LAND_SALE:
                 property = parseAbstractProperty(propertyUrl);
                 if (property != null) {
                     property.setOperationType(operationType);
@@ -173,6 +174,7 @@ public class ParseServiceImpl implements ParseService {
         categoryLinks.add(OperationType.HOUSE_EXCHANGE);
         categoryLinks.add(OperationType.HOUSE_SALE);
         categoryLinks.add(OperationType.GARAGE_SALE);
+        categoryLinks.add(OperationType.LAND_SALE);
 
         categoryLinks.forEach(categoryLink -> {
             String parseUrl = "http://sibestate.ru/" + companyId + "/" + categoryLink;
@@ -201,7 +203,9 @@ public class ParseServiceImpl implements ParseService {
                     String propUrl = "http://sibestate.ru/" + categoryLink + "/" + code;
                     System.out.println(propUrl);
                     Property property = parseProperty(propUrl);
-                    propList.add(property);
+                    if (property != null) {
+                        propList.add(property);
+                    }
                 }
                 result.put(categoryLink, propList);
             }

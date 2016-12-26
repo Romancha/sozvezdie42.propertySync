@@ -41,6 +41,9 @@ public class AdapterUtils {
             case OperationType.GARAGE_SALE:
                 categoryList.add(Category.GARAGE);
                 return categoryList;
+            case OperationType.LAND_SALE:
+                categoryList.add(Category.COUNTRY_HOUSE);
+                return categoryList;
         }
         return null;
     }

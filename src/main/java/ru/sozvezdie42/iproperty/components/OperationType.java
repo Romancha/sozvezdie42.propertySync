@@ -16,16 +16,19 @@ public class OperationType {
 
     public static final String GARAGE_SALE = "garage/sale";
 
+    public static final String LAND_SALE = "land/sale";
+
     public static String getOperationTypeFromPropUrl(String propUrl) {
         if (propUrl.contains(RESIDENTIAL_SALE)) return RESIDENTIAL_SALE;
         if (propUrl.contains(RESIDENTIAL_PURCHASE)) return RESIDENTIAL_PURCHASE;
-        if (propUrl.contains(RESIDENTIAL_RENT)) return RESIDENTIAL_RENT ;
+        if (propUrl.contains(RESIDENTIAL_RENT)) return RESIDENTIAL_RENT;
         if (propUrl.contains(RESIDENTIAL_RENTUSE)) return RESIDENTIAL_RENTUSE;
         if (propUrl.contains(RESIDENTIAL_EXCHANGE)) return RESIDENTIAL_EXCHANGE;
         if (propUrl.contains(RESIDENTIAL_NEW)) return RESIDENTIAL_NEW;
         if (propUrl.contains(HOUSE_SALE)) return HOUSE_SALE;
         if (propUrl.contains(HOUSE_EXCHANGE)) return HOUSE_EXCHANGE;
         if (propUrl.contains(GARAGE_SALE)) return GARAGE_SALE;
+        if (propUrl.contains(LAND_SALE)) return LAND_SALE;
         return "";
     }
 }
