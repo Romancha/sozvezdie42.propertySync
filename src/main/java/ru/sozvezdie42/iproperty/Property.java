@@ -14,6 +14,7 @@ public class Property {
     private int dbKey;
     private String id;
     private String ref;
+    private String alias;
     private String operationType;
     private String description;
     private String shortDescription;
@@ -147,6 +148,14 @@ public class Property {
 
     public void setImages(ArrayList<Image> images) {
         this.images = images;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     @Override

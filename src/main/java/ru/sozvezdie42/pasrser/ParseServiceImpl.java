@@ -9,7 +9,6 @@ import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.PropertyFactory;
 import ru.sozvezdie42.iproperty.ResidentialProperty;
 import ru.sozvezdie42.iproperty.components.*;
-import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,16 +34,14 @@ public class ParseServiceImpl implements ParseService {
             case OperationType.HOUSE_EXCHANGE:
                 property = parseResidentialProperty(propertyUrl);
                 if (property != null) {
-                    property.setOperationType(operationType);
-                    property.setCategory(AdapterUtils.getPropertyCategoryByOperationType(operationType));
+                    property = fillCategories(property, operationType);
                 }
                 break;
             case OperationType.GARAGE_SALE:
             case OperationType.LAND_SALE:
                 property = parseAbstractProperty(propertyUrl);
                 if (property != null) {
-                    property.setOperationType(operationType);
-                    property.setCategory(AdapterUtils.getPropertyCategoryByOperationType(operationType));
+                    property = fillCategories(property, operationType);
                 }
         }
         return property;
@@ -82,6 +79,10 @@ public class ParseServiceImpl implements ParseService {
 
         property.setRef(ref);
         property.setId(parser.getId(doc));
+
+        String alias = property.getRef() + "-" + property.getId();
+        property.setAlias(alias);
+
         property.setDescription(parser.getComment(doc));
         property.setShortDescription(shortDescription);
         property.setLocation(parser.getLocation(parser.getLocationStr(doc), doc));
@@ -139,6 +140,10 @@ public class ParseServiceImpl implements ParseService {
 
         property.setRef(ref);
         property.setId(parser.getId(doc));
+
+        String alias = property.getRef() + "-" + property.getId();
+        property.setAlias(alias);
+
         property.setDescription(parser.getComment(doc));
         property.setShortDescription(shortDescription);
 
@@ -212,5 +217,21 @@ public class ParseServiceImpl implements ParseService {
 
         });
         return result;
+    }
+
+    private Property fillCategories(Property property, String operationType) {
+        final String KGT = "КГТ (Гостинка)";
+        property.setOperationType(operationType);
+
+        List<String> categories = AdapterUtils.getPropertyCategoryByOperationType(operationType);
+        if (property instanceof ResidentialProperty) {
+            ResidentialProperty resProp = (ResidentialProperty) property;
+            if (resProp.getType().getType().equals(KGT)) {
+                categories.add(Category.KGT);
+            }
+        }
+
+        property.setCategory(categories);
+        return property;
     }
 }

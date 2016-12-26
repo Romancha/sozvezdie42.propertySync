@@ -75,7 +75,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setString(5, AdapterUtils.prepare(location.getStreet()));
             preparedStatement.setString(6, AdapterUtils.prepare(location.getNumberHouse()));
             preparedStatement.setString(7, AdapterUtils.prepare(location.getRegion()));
-            preparedStatement.setString(8, AdapterUtils.prepare(prop.getId()));
+            preparedStatement.setString(8, AdapterUtils.prepare(prop.getAlias()));
             preparedStatement.setInt(9, 0);
             preparedStatement.setInt(10, 1);
             preparedStatement.setString(11, AdapterUtils.prepare(prop.getShortDescription()));
@@ -217,7 +217,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setString(4, AdapterUtils.prepare(location.getStreet()));
             preparedStatement.setString(5, AdapterUtils.prepare(location.getNumberHouse()));
             preparedStatement.setString(6, AdapterUtils.prepare(location.getRegion()));
-            preparedStatement.setString(7, AdapterUtils.prepare(prop.getId()));
+            preparedStatement.setString(7, AdapterUtils.prepare(prop.getAlias()));
             preparedStatement.setInt(8, 0);
             preparedStatement.setInt(9, 1);
             preparedStatement.setString(10, AdapterUtils.prepare(prop.getShortDescription()));

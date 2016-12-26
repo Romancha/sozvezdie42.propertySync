@@ -45,6 +45,6 @@ public class AdapterUtils {
                 categoryList.add(Category.COUNTRY_HOUSE);
                 return categoryList;
         }
-        return null;
+        return categoryList;
     }
 }
