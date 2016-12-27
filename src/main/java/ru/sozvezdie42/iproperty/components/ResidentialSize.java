@@ -19,6 +19,7 @@ public class ResidentialSize implements Size {
         this.kitchen = kitchen;
     }
 
+    @Override
     public double getTotal() {
         return total;
     }

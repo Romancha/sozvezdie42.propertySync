@@ -23,6 +23,7 @@ public class Agent {
     public int getId() {
         switch (this.name) {
             case "Марина Николаевна":
+            case "Марина Николаевна Notebook":
                 return 1;
             case "Марина Валерьевна":
             case "Марина":

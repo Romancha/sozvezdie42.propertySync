@@ -40,7 +40,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
         Location location = prop.getLocation();
 
-        ResidentialSize size = null;
+        Size size = prop.getSize();
         PropertyType type = null;
         ResidentialSpecifications specifications = null;
         Bathroom bathroom = null;
@@ -64,7 +64,6 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             balconyDescription = specifications.getBalcony().getDescription();
             roomAmt = resProp.getRoomAmt();
-            size = (ResidentialSize) prop.getSize();
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -183,7 +182,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
         Location location = prop.getLocation();
 
-        ResidentialSize size = null;
+        Size size = prop.getSize();
         PropertyType type = null;
         ResidentialSpecifications specifications = null;
         Bathroom bathroom = null;
@@ -207,7 +206,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             balconyDescription = specifications.getBalcony().getDescription();
             roomAmt = resProp.getRoomAmt();
-            size = (ResidentialSize) prop.getSize();
+
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -386,7 +385,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
         String query = "SELECT * FROM aj2or_iproperty WHERE alias=?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, property.getId());
+            preparedStatement.setString(1, property.getAlias());
             ResultSet rs = preparedStatement.executeQuery();
             if (rs.next()) {
                 return true;

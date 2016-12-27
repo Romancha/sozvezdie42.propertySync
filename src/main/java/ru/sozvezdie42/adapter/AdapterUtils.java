@@ -44,6 +44,18 @@ public class AdapterUtils {
             case OperationType.LAND_SALE:
                 categoryList.add(Category.COUNTRY_HOUSE);
                 return categoryList;
+            case OperationType.TRADE_SALE:
+            case OperationType.TRADE_RENT:
+            case OperationType.OFFICE_SALE:
+            case OperationType.OFFICE_RENT:
+            case OperationType.PRODUCT_SALE:
+            case OperationType.PRODUCT_RENT:
+            case OperationType.LANDCOM_SALE:
+            case OperationType.LANDCOM_RENT:
+            case OperationType.OTHER_SALE:
+            case OperationType.OTHER_RENT:
+                categoryList.add(Category.COMMERCIAL);
+                return categoryList;
         }
         return categoryList;
     }
