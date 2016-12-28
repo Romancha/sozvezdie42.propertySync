@@ -9,4 +9,5 @@ public interface CategoryDAO {
     public boolean createPropCategoryBonds(int dbKeyProp, int dbKeyCategory);
     public boolean executePropCategory(Property property);
     public boolean bondsExists(int dbKeyProp, int dbKeyCategory);
+    public boolean deleteBondsCategory(Property property);
 }

@@ -1,9 +1,6 @@
 package ru.sozvezdie42.adapter;
 
 import ru.sozvezdie42.iproperty.Property;
-import ru.sozvezdie42.iproperty.components.Agent;
-
-import java.util.List;
 
 /**
  * Created by Roman on 12/8/2016.
@@ -13,4 +10,5 @@ public interface AgentDAO {
     boolean updatePropAgentBonds(Property property);
     boolean executeAgent(Property property);
     boolean agentPropBondExists(Property property);
+    boolean deleteBondsAgent(Property property);
 }

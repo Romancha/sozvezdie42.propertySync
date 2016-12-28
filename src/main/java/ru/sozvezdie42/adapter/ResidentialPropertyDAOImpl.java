@@ -3,7 +3,9 @@ package ru.sozvezdie42.adapter;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.ResidentialProperty;
 import ru.sozvezdie42.iproperty.components.*;
-import ru.sozvezdie42.iproperty.components.specifications.*;
+import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
+import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
+import ru.sozvezdie42.iproperty.components.specifications.State;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -307,7 +309,20 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
     @Override
     public boolean delete(Property property) {
-        return false;
+        String deleteQuery = "DELETE FROM aj2or_iproperty WHERE id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+            preparedStatement.setInt(1, property.getDbKey());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        new AgentDAOImpl(connection).deleteBondsAgent(property);
+        new CategoryDAOImpl(connection).deleteBondsCategory(property);
+        new ImageDAOImpl(connection).deleteImages(property);
+
+        return true;
     }
 
     @Override
@@ -349,13 +364,15 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
     @Override
     public int getPropertyDbKey(Property property) {
-        String query = "SELECT id FROM aj2or_iproperty WHERE mls_id = ?;";
+        String query = "SELECT id FROM aj2or_iproperty WHERE alias = ?;";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, property.getRef());
+            preparedStatement.setString(1, property.getAlias());
             ResultSet rs = preparedStatement.executeQuery();
-            rs.next();
-            return rs.getInt("id");
+
+            while (rs.next()) {
+                return rs.getInt("id");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

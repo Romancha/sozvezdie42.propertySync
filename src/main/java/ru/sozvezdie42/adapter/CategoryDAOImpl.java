@@ -75,6 +75,19 @@ public class CategoryDAOImpl implements CategoryDAO {
         return false;
     }
 
+    @Override
+    public boolean deleteBondsCategory(Property property) {
+        String deleteQuery = "DELETE FROM aj2or_iproperty_propmid WHERE prop_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+            preparedStatement.setInt(1, property.getDbKey());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     public CategoryDAOImpl(Connection connection) {
         this.connection = connection;
     }

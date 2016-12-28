@@ -1,14 +1,11 @@
 package ru.sozvezdie42.adapter;
 
 import ru.sozvezdie42.iproperty.Property;
-import ru.sozvezdie42.iproperty.components.Agent;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Roman on 12/8/2016.
@@ -89,6 +86,19 @@ public class AgentDAOImpl implements AgentDAO {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean deleteBondsAgent(Property property) {
+        String deleteQuery = "DELETE FROM aj2or_iproperty_agentmid WHERE prop_id = ?";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
+            preparedStatement.setInt(1, property.getDbKey());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public AgentDAOImpl(Connection connection) {
