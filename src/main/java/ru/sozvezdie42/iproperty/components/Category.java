@@ -3,7 +3,7 @@ package ru.sozvezdie42.iproperty.components;
 import java.util.List;
 
 /**
- * Created by Roman on 12/7/2016.
+ * @author Romancha
  */
 public class Category {
     public static final String SWAP = "Обмен";

@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 import ru.sozvezdie42.iproperty.components.Location;
 
 /**
- * Created by Roman on 12/23/2016.
+ * @author Romancha on 12/23/2016.
  */
 public class CottageParser extends ResidentialParser {
     @Override

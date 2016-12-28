@@ -12,13 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Created by Roman on 12/28/2016.
+ * @author Romancha
  */
 public class Synchronizer {
 
@@ -27,33 +24,36 @@ public class Synchronizer {
 
     public void synchronizeCompany(String companyId) throws SQLException {
 
+        System.out.println("Start sync. Date: " + new Date());
+
         Instant start = Instant.now();
-
-        HashMap<String, ArrayList<Property>> props = new ParseServiceImpl().
-                parseResidentialFromCompany(companyId);
-        HashSet<String> incomeAliasList = new HashSet<>();
-
-        System.out.println(props);
-
 
         MytSqlDaoFactory factory = new MytSqlDaoFactory();
         connection = factory.getConnection();
-        propertyDAO = new ResidentialPropertyDAOImpl(connection);
 
-        props.forEach((k, v) -> v.forEach(property -> {
-            propertyDAO.executeProperty(property);
-            incomeAliasList.add(property.getAlias());
-        }));
-
-        deleteNotRelevantProperty(incomeAliasList);
-
-        connection.close();
-
-        Instant end = Instant.now();
+        if (connection != null) {
+            HashMap<String, ArrayList<Property>> props = new ParseServiceImpl().
+                    parseResidentialFromCompany(companyId);
+            HashSet<String> incomeAliasList = new HashSet<>();
 
 
-        System.out.println("OK: " + Duration.between(start, end));
-        System.out.println("length: " + props.size());
+            propertyDAO = new ResidentialPropertyDAOImpl(connection);
+
+            props.forEach((k, v) -> v.forEach(property -> {
+                propertyDAO.executeProperty(property);
+                incomeAliasList.add(property.getAlias());
+            }));
+
+            deleteNotRelevantProperty(incomeAliasList);
+
+            connection.close();
+
+            Instant end = Instant.now();
+
+            System.out.println("Sync end in: " + Duration.between(start, end));
+        } else {
+            System.out.println("ERROR! Couldn't get connection");
+        }
     }
 
     private void deleteNotRelevantProperty (HashSet<String> incomeAliasList) {
@@ -65,7 +65,7 @@ public class Synchronizer {
                 property.setAlias(alias);
                 property.setDbKey(dbKey);
                 propertyDAO.delete(property);
-                System.out.println("Property deleted - alias: " + alias);
+                System.out.println("Not relevant property deleted - alias: " + property.getAlias() + " db key: " + property.getDbKey());
             }
         }));
     }

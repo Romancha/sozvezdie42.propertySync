@@ -1,7 +1,7 @@
 package ru.sozvezdie42.iproperty.components;
 
 /**
- * Created by Roman on 12/7/2016.
+ * @author Romancha
  */
 public class District {
     public static final String LN = "Ленинский";

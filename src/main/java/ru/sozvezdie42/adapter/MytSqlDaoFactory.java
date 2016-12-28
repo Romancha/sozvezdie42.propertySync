@@ -1,21 +1,25 @@
 package ru.sozvezdie42.adapter;
 
+import ru.sozvezdie42.res.PropertyResources;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 /**
- * Created by Roman on 12/7/2016.
+ * @author Romancha
  */
 public class MytSqlDaoFactory {
-    private static final String url = "jdbc:mysql://localhost/u0061205_Soz1";
-    private static final String user = "root";
-    private static final String password = "";
 
     public Connection getConnection() {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(url, user, password);
+            connection = DriverManager.getConnection(PropertyResources.DB_URL, PropertyResources.DB_USER,
+                    PropertyResources.DB_PASSWORD);
         } catch (SQLException e) {
             e.printStackTrace();
         }

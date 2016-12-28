@@ -1,7 +1,7 @@
 package ru.sozvezdie42.iproperty.components;
 
 /**
- * Created by Roman on 12/6/2016.
+ * @author Romancha on 12/6/2016.
  */
 public class OperationType {
     public static final String RESIDENTIAL_SALE = "flat/sale";

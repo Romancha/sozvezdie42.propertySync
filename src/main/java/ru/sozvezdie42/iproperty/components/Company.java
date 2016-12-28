@@ -1,7 +1,7 @@
 package ru.sozvezdie42.iproperty.components;
 
 /**
- * Created by Roman on 12/9/2016.
+ * @author Romancha on 12/9/2016.
  */
 public class Company {
     public static final int SOZVEZDIE = 1;

@@ -4,7 +4,7 @@ import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.components.Image;
 
 /**
- * Created by Roman on 12/22/2016.
+ * @author Romancha
  */
 public interface ImageDAO {
     public boolean writeImageFile(Image image);

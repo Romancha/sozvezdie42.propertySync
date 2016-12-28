@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Roman on 12/22/2016.
+ * @author Romancha
  */
 public class ImageParseServiceImpl implements ImageParserService {
     @Override
@@ -42,7 +42,7 @@ public class ImageParseServiceImpl implements ImageParserService {
             }
         });
 
-        System.out.println(imagesUrl);
+        System.out.println("Images: " + imagesUrl);
 
         imagesUrl.forEach(imageUrl -> {
             String[] urlData = imageUrl.split("/");

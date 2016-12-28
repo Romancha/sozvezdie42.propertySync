@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 
 /**
- * Created by Roman on 12/7/2016.
+ * @author Romancha
  */
 public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
@@ -38,11 +38,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, " +
                         "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        Property prop = property;
-
-        Location location = prop.getLocation();
-
-        Size size = prop.getSize();
+        Location location = property.getLocation();
+        Size size = property.getSize();
         PropertyType type = null;
         ResidentialSpecifications specifications = null;
         Bathroom bathroom = null;
@@ -69,27 +66,27 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, AdapterUtils.prepare(prop.getRef()));
+            preparedStatement.setString(1, AdapterUtils.prepare(property.getRef()));
             preparedStatement.setInt(2, 0);
             preparedStatement.setInt(3, 1);
             preparedStatement.setInt(4, 1);
             preparedStatement.setString(5, AdapterUtils.prepare(location.getStreet()));
             preparedStatement.setString(6, AdapterUtils.prepare(location.getNumberHouse()));
             preparedStatement.setString(7, AdapterUtils.prepare(location.getRegion()));
-            preparedStatement.setString(8, AdapterUtils.prepare(prop.getAlias()));
+            preparedStatement.setString(8, AdapterUtils.prepare(property.getAlias()));
             preparedStatement.setInt(9, 0);
             preparedStatement.setInt(10, 1);
-            preparedStatement.setString(11, AdapterUtils.prepare(prop.getShortDescription()));
-            preparedStatement.setString(12, AdapterUtils.prepare(prop.getDescription()));
+            preparedStatement.setString(11, AdapterUtils.prepare(property.getShortDescription()));
+            preparedStatement.setString(12, AdapterUtils.prepare(property.getDescription()));
             preparedStatement.setString(13, AdapterUtils.prepare(location.getCity()));
             preparedStatement.setInt(14, District.getId(location.getDistrict()));
             preparedStatement.setDouble(15, location.getCoordinates()[0]);
             preparedStatement.setDouble(16, location.getCoordinates()[1]);
-            preparedStatement.setDouble(17, prop.getFinance().getPrice());
+            preparedStatement.setDouble(17, property.getFinance().getPrice());
 
             int storey = 0;
-            if (prop.getStorey() != null) {
-                storey = prop.getStorey().getStorey();
+            if (property.getStorey() != null) {
+                storey = property.getStorey().getStorey();
             }
             preparedStatement.setInt(18, storey);
 
@@ -163,6 +160,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             ImageDAO imageDAO = new ImageDAOImpl(connection);
             imageDAO.deleteImages(property);
             imageDAO.executeImages(property);
+
+            System.out.println("Property created - alias: " + property.getAlias() + " db key: " + property.getDbKey());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -180,11 +179,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
                 "listing_info = ?, beds = ?, modified = ?, created_by = ?, modified_by = ?, access = ?" +
                 " WHERE id = ?;";
 
-        Property prop = property;
-
-        Location location = prop.getLocation();
-
-        Size size = prop.getSize();
+        Location location = property.getLocation();
+        Size size = property.getSize();
         PropertyType type = null;
         ResidentialSpecifications specifications = null;
         Bathroom bathroom = null;
@@ -218,20 +214,20 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             preparedStatement.setString(4, AdapterUtils.prepare(location.getStreet()));
             preparedStatement.setString(5, AdapterUtils.prepare(location.getNumberHouse()));
             preparedStatement.setString(6, AdapterUtils.prepare(location.getRegion()));
-            preparedStatement.setString(7, AdapterUtils.prepare(prop.getAlias()));
+            preparedStatement.setString(7, AdapterUtils.prepare(property.getAlias()));
             preparedStatement.setInt(8, 0);
             preparedStatement.setInt(9, 1);
-            preparedStatement.setString(10, AdapterUtils.prepare(prop.getShortDescription()));
-            preparedStatement.setString(11, AdapterUtils.prepare(prop.getDescription()));
+            preparedStatement.setString(10, AdapterUtils.prepare(property.getShortDescription()));
+            preparedStatement.setString(11, AdapterUtils.prepare(property.getDescription()));
             preparedStatement.setString(12, AdapterUtils.prepare(location.getCity()));
             preparedStatement.setInt(13, District.getId(location.getDistrict()));
             preparedStatement.setDouble(14, location.getCoordinates()[0]);
             preparedStatement.setDouble(15, location.getCoordinates()[1]);
-            preparedStatement.setDouble(16, prop.getFinance().getPrice());
+            preparedStatement.setDouble(16, property.getFinance().getPrice());
 
             int storey = 0;
-            if (prop.getStorey() != null) {
-                storey = prop.getStorey().getStorey();
+            if (property.getStorey() != null) {
+                storey = property.getStorey().getStorey();
             }
             preparedStatement.setInt(17, storey);
 
@@ -300,6 +296,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             ImageDAO imageDAO = new ImageDAOImpl(connection);
             imageDAO.deleteImages(property);
             imageDAO.executeImages(property);
+
+            System.out.println("Property updated - alias: " + property.getAlias() + " db key: " + property.getDbKey());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -321,6 +319,8 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
         new AgentDAOImpl(connection).deleteBondsAgent(property);
         new CategoryDAOImpl(connection).deleteBondsCategory(property);
         new ImageDAOImpl(connection).deleteImages(property);
+
+        System.out.println("Property deleted - alias: " + property.getAlias() + "db key: " + property.getDbKey());
 
         return true;
     }

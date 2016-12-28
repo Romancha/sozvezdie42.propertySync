@@ -5,7 +5,7 @@ import ru.sozvezdie42.iproperty.components.Category;
 import java.util.List;
 
 /**
- * Created by Roman on 12/5/2016.
+ * @author Romancha on 12/5/2016.
  */
 public class PropertyFactory {
     public Property createProperty(List<String> categories) {
@@ -19,7 +19,6 @@ public class PropertyFactory {
         } else if (categories.contains(Category.COMMERCIAL)) {
             property = new CommercialProperty();
         }
-
         return property;
     }
 }

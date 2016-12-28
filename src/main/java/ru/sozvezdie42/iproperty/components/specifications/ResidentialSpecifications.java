@@ -1,7 +1,7 @@
 package ru.sozvezdie42.iproperty.components.specifications;
 
 /**
- * Created by Roman on 12/5/2016.
+ * @author Romancha on 12/5/2016.
  */
 public class ResidentialSpecifications implements Specifications {
     public static final String ID_STATE = "Состояние:";

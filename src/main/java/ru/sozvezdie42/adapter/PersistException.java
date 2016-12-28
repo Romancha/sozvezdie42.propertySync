@@ -1,7 +1,7 @@
 package ru.sozvezdie42.adapter;
 
 /**
- * Created by Roman on 12/7/2016.
+ * @author Romancha
  */
 public class PersistException extends Exception {
     public PersistException() {

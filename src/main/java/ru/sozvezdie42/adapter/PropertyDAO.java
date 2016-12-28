@@ -6,7 +6,7 @@ import java.util.List;
 
 
 /**
- * Created by Roman on 12/7/2016.
+ * @author Romancha
  */
 public interface PropertyDAO {
     Property create(Property property);

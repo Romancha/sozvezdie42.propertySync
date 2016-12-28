@@ -10,7 +10,7 @@ import ru.sozvezdie42.iproperty.components.ResidentialSize;
 import java.util.Arrays;
 
 /**
- * Created by Roman on 12/26/2016.
+ * @author Romancha on 12/26/2016.
  */
 public class CommercialParser extends Parser {
 

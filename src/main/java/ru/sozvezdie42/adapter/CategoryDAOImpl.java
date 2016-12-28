@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Roman on 12/11/2016.
+ * @author Romancha on 12/11/2016.
  */
 public class CategoryDAOImpl implements CategoryDAO {
 

@@ -4,7 +4,7 @@ package ru.sozvezdie42.iproperty;
 import ru.sozvezdie42.iproperty.components.PropertyType;
 
 /**
- * Created by Roman on 12/5/2016.
+ * @author Romancha on 12/5/2016.
  */
 public class ResidentialProperty extends Property {
     private PropertyType type;

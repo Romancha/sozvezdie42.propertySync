@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * Created by Roman on 12/8/2016.
+ * @author Romancha on 12/8/2016.
  */
 public class AgentDAOImpl implements AgentDAO {
 

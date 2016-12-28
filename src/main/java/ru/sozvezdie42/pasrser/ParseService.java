@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Roman on 12/6/2016.
+ * @author Romancha on 12/6/2016.
  */
 public interface ParseService {
     public Property parseProperty(String propertyUrl);

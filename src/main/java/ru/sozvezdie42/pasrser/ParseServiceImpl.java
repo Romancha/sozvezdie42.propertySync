@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Roman on 12/6/2016.
+ * @author Romancha on 12/6/2016.
  */
 public class ParseServiceImpl implements ParseService {
 
@@ -309,7 +309,7 @@ public class ParseServiceImpl implements ParseService {
 
                     String propUrl = site + categoryLink + "/" + code;
 
-                    System.out.println(propUrl);
+                    System.out.println("Parse property: " + propUrl);
                     Property property = parseProperty(propUrl);
                     if (property != null) {
                         propList.add(property);

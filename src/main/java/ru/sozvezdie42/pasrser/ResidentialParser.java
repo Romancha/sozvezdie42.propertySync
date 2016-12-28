@@ -12,7 +12,7 @@ import ru.sozvezdie42.iproperty.components.specifications.State;
 import java.util.ArrayList;
 
 /**
- * Created by Roman on 12/5/2016.
+ * @author Romancha on 12/5/2016.
  */
 public class ResidentialParser extends Parser {
 
@@ -76,7 +76,6 @@ public class ResidentialParser extends Parser {
         }
 
         double[] coordinates = getCoordinates(document);
-        System.out.println("COOR: " + coordinates[0] + ", " + coordinates[1]);
 
         Location location = new Location(street, city, district, house, coordinates);
         location.setLocationStr(locationStr);
