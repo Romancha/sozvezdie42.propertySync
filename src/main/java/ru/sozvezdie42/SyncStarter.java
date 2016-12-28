@@ -14,6 +14,6 @@ public class SyncStarter {
     public static void main(String[] args) throws IOException, SQLException {
         new PropertyResources();
         Synchronizer synchronizer = new Synchronizer();
-        synchronizer.synchronizeCompany("sozvezdie42");
+        synchronizer.synchronizeCompany(PropertyResources.COMPANY);
     }
 }
