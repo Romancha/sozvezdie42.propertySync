@@ -14,7 +14,13 @@ public class PropertyResources {
     public static String DB_PASSWORD;
 
     public static String PICTURE_PATH;
-    public static String PICTURE_PATH_SHORT;
+    public static String PICTURE_LOCALE_PATH;
+    public static String PICTURE_PATH_SHORT_DB;
+
+    public static boolean FTP_ENABLED;
+    public static String FTP_SERVER;
+    public static String FTP_USER;
+    public static String FTP_PASSWORD;
 
     public static String COMPANY;
 
@@ -29,10 +35,16 @@ public class PropertyResources {
 
             DB_URL = prop.getProperty("db.url");
             DB_USER = prop.getProperty("db.user");
-            DB_PASSWORD = prop.getProperty("db.pass");
+            DB_PASSWORD = prop.getProperty("db.password");
 
             PICTURE_PATH = prop.getProperty("picture.path");
-            PICTURE_PATH_SHORT = prop.getProperty("picture.path.short");
+            PICTURE_LOCALE_PATH = prop.getProperty("picture.locale.path");
+            PICTURE_PATH_SHORT_DB = prop.getProperty("picture.path.short.db");
+
+            FTP_ENABLED = Boolean.valueOf(prop.getProperty("ftp.enabled"));
+            FTP_SERVER = prop.getProperty("ftp.server");
+            FTP_USER = prop.getProperty("ftp.user");
+            FTP_PASSWORD = prop.getProperty("ftp.password");
 
             COMPANY = prop.getProperty("company");
 

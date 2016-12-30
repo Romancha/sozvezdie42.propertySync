@@ -6,6 +6,7 @@ import ru.sozvezdie42.iproperty.components.*;
 import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
 import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
 import ru.sozvezdie42.iproperty.components.specifications.State;
+import ru.sozvezdie42.synchronizer.Synchronization;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,13 +18,12 @@ import java.util.List;
  */
 public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
-    private static final Integer SYNC_USER_ID = 57;
-
     private Connection connection;
+    private ImageDAO imageDAO;
 
-
-    public ResidentialPropertyDAOImpl(Connection connection) {
+    public ResidentialPropertyDAOImpl(Connection connection, ImageDAO imageDAO) {
         this.connection = connection;
+        this.imageDAO = imageDAO;
     }
 
     @Override
@@ -139,14 +139,13 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
             preparedStatement.setDate(40, currentDate);
             preparedStatement.setDate(41, currentDate);
-            preparedStatement.setInt(42, SYNC_USER_ID);
-            preparedStatement.setInt(43, SYNC_USER_ID);
+            preparedStatement.setInt(42, Synchronization.SYNCHRONIZER_USER_ID);
+            preparedStatement.setInt(43, Synchronization.SYNCHRONIZER_USER_ID);
             preparedStatement.setInt(44, 1);
 
             preparedStatement.executeUpdate();
 
-            PropertyDAO propertyDAO = new ResidentialPropertyDAOImpl(connection);
-            property.setDbKey(propertyDAO.getPropertyDbKey(property));
+            property.setDbKey(this.getPropertyDbKey(property));
 
             Agent agent = property.getAgent();
             if (agent != null) {
@@ -157,7 +156,6 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
             categoryDAO.executePropCategory(property);
 
-            ImageDAO imageDAO = new ImageDAOImpl(connection);
             imageDAO.deleteImages(property);
             imageDAO.executeImages(property);
 
@@ -277,15 +275,14 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             Date currentDate = new Date(Calendar.getInstance().getTime().getTime());
             preparedStatement.setInt(37, roomAmt);
             preparedStatement.setDate(38, currentDate);
-            preparedStatement.setInt(39, SYNC_USER_ID);
-            preparedStatement.setInt(40, SYNC_USER_ID);
+            preparedStatement.setInt(39, Synchronization.SYNCHRONIZER_USER_ID);
+            preparedStatement.setInt(40, Synchronization.SYNCHRONIZER_USER_ID);
             preparedStatement.setInt(41, 1);
 
-            PropertyDAO propertyDAO = new ResidentialPropertyDAOImpl(connection);
-            preparedStatement.setInt(42, propertyDAO.getPropertyDbKey(property));
+            preparedStatement.setInt(42, getPropertyDbKey(property));
 
             preparedStatement.executeUpdate();
-            property.setDbKey(propertyDAO.getPropertyDbKey(property));
+            property.setDbKey(getPropertyDbKey(property));
 
             AgentDAO agentDAO = new AgentDAOImpl(connection);
             agentDAO.executeAgent(property);
@@ -293,7 +290,6 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             CategoryDAO categoryDAO = new CategoryDAOImpl(connection);
             categoryDAO.executePropCategory(property);
 
-            ImageDAO imageDAO = new ImageDAOImpl(connection);
             imageDAO.deleteImages(property);
             imageDAO.executeImages(property);
 
@@ -318,7 +314,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
 
         new AgentDAOImpl(connection).deleteBondsAgent(property);
         new CategoryDAOImpl(connection).deleteBondsCategory(property);
-        new ImageDAOImpl(connection).deleteImages(property);
+        imageDAO.deleteImages(property);
 
         System.out.println("Property deleted - alias: " + property.getAlias() + "db key: " + property.getDbKey());
 

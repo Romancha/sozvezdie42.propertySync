@@ -9,7 +9,7 @@ import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
 import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
 import ru.sozvezdie42.iproperty.components.specifications.State;
 
-import java.util.ArrayList;
+
 
 /**
  * @author Romancha on 12/5/2016.
@@ -154,8 +154,6 @@ public class ResidentialParser extends Parser {
                     state = new State(td);
                     break;
             }
-
-
         }
 
         bathroom = new Bathroom(type, amt);
@@ -183,9 +181,6 @@ public class ResidentialParser extends Parser {
                 st.setMaxStorey(maxStorey);
             }
         }
-
-
-
         return st;
     }
 

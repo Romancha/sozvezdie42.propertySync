@@ -1,11 +1,11 @@
 package ru.sozvezdie42.synchronizer;
 
-import ru.sozvezdie42.adapter.MytSqlDaoFactory;
-import ru.sozvezdie42.adapter.PropertyDAO;
-import ru.sozvezdie42.adapter.ResidentialPropertyDAOImpl;
+import org.apache.commons.net.ftp.FTPClient;
+import ru.sozvezdie42.adapter.*;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.pasrser.ParseServiceImpl;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +17,9 @@ import java.util.*;
 /**
  * @author Romancha
  */
-public class Synchronizer {
+public class Synchronization {
+
+    public static final int SYNCHRONIZER_USER_ID = 57;
 
     private PropertyDAO propertyDAO;
     private Connection connection;
@@ -25,19 +27,20 @@ public class Synchronizer {
     public void synchronizeCompany(String companyId) throws SQLException {
 
         System.out.println("Start sync. Date: " + new Date());
-
         Instant start = Instant.now();
 
         MytSqlDaoFactory factory = new MytSqlDaoFactory();
         connection = factory.getConnection();
+        ImageDAO imageDAO = factory.getImageDAO(connection);
+        propertyDAO = factory.getPropertyDAO(connection, imageDAO);
 
-        if (connection != null) {
+        FTPClient ftpClient = imageDAO.getFtpClient();
+        if (connection != null && ftpClient.isConnected()) {
             HashMap<String, ArrayList<Property>> props = new ParseServiceImpl().
                     parseResidentialFromCompany(companyId);
             HashSet<String> incomeAliasList = new HashSet<>();
 
-
-            propertyDAO = new ResidentialPropertyDAOImpl(connection);
+            propertyDAO = new ResidentialPropertyDAOImpl(connection, imageDAO);
 
             props.forEach((k, v) -> v.forEach(property -> {
                 propertyDAO.executeProperty(property);
@@ -48,11 +51,18 @@ public class Synchronizer {
 
             connection.close();
 
+            if (ftpClient.isConnected()) {
+                try {
+                    ftpClient.disconnect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Disconnect ftp...");
+            }
             Instant end = Instant.now();
-
             System.out.println("Sync end in: " + Duration.between(start, end));
         } else {
-            System.out.println("ERROR! Couldn't get connection");
+            System.out.println("ERROR! Couldn't get connection or FTP connection");
         }
     }
 
@@ -60,7 +70,7 @@ public class Synchronizer {
         HashMap<Map<String, Integer>, Integer> allProperty = getAllPropertyMap(connection);
 
         allProperty.forEach((k, createdBy) -> k.forEach((alias, dbKey) ->{
-            if (createdBy == 57 && !incomeAliasList.contains(alias)) {
+            if (createdBy == SYNCHRONIZER_USER_ID && !incomeAliasList.contains(alias)) {
                 Property property = new Property();
                 property.setAlias(alias);
                 property.setDbKey(dbKey);

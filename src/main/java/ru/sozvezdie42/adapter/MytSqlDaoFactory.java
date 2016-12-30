@@ -2,9 +2,6 @@ package ru.sozvezdie42.adapter;
 
 import ru.sozvezdie42.res.PropertyResources;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,16 +15,24 @@ public class MytSqlDaoFactory {
     public Connection getConnection() {
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(PropertyResources.DB_URL, PropertyResources.DB_USER,
-                    PropertyResources.DB_PASSWORD);
+            Properties properties=new Properties();
+            properties.setProperty("user", PropertyResources.DB_USER);
+            properties.setProperty("password", PropertyResources.DB_PASSWORD);
+            properties.setProperty("useUnicode","true");
+            properties.setProperty("characterEncoding","UTF-8");
+            connection = DriverManager.getConnection(PropertyResources.DB_URL, properties);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return connection;
     }
 
-    public PropertyDAO getPropertyDao(Connection connection) {
-        return new ResidentialPropertyDAOImpl(connection);
+    public PropertyDAO getPropertyDAO(Connection connection, ImageDAO imageDAO) {
+        return new ResidentialPropertyDAOImpl(connection, imageDAO);
+    }
+
+    public ImageDAO getImageDAO(Connection connection) {
+        return new ImageDAOImpl(connection);
     }
 
     public AgentDAO getAgentDAO(Connection connection) {
