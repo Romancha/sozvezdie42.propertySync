@@ -18,7 +18,7 @@ public class ImageParseServiceImpl implements ImageParserService {
         Document doc = null;
 
         try {
-            doc = Jsoup.connect(propertyUrl).get();
+            doc = Jsoup.connect(propertyUrl).timeout(10*1000).get();
         } catch (Exception e) {
             e.printStackTrace();
         }

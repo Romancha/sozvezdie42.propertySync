@@ -40,7 +40,8 @@ public class ImageDAOImpl implements ImageDAO {
 
     private boolean writeOnLocale(Image image) {
         try {
-            Connection.Response resultImageResponse = Jsoup.connect(image.getImageUrl()).ignoreContentType(true).execute();
+            Connection.Response resultImageResponse = Jsoup.connect(image.getImageUrl()).ignoreContentType(true)
+                    .timeout(10*1000).execute();
             String fileOutName = image.getFileName() + image.getFileType();
 
             File imageFile = new java.io.File(PropertyResources.PICTURE_LOCALE_PATH, fileOutName);

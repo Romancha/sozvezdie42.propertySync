@@ -272,14 +272,20 @@ public class ParseServiceImpl implements ParseService {
             Document doc = null;
 
             try {
-                doc = Jsoup.connect(parseUrl).get();
+                doc = Jsoup.connect(parseUrl).timeout(10*1000).get();
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             if (doc != null) {
                 Element tableElement = doc.getElementsByClass("table-responsive").get(0);
-                Element tableBody = tableElement.select("tbody").get(0);
+                Elements tableBodyElements = tableElement.select("tbody");
+
+                if (tableBodyElements.size() == 0) {
+                    return;
+                }
+
+                Element tableBody = tableBodyElements.get(0);
                 Elements tableElements = tableBody.select("tr");
 
                 ArrayList<Property> propList = new ArrayList<>();
