@@ -1,0 +1,4 @@
+.idea/
+*.iml
+target/
+soz42sync\.properties

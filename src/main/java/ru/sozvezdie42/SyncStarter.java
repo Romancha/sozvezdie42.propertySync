@@ -1,18 +1,24 @@
 package ru.sozvezdie42;
 
+import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 import ru.sozvezdie42.res.PropertyResources;
-import ru.sozvezdie42.synchronizer.Synchronization;
-
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * @author Romancha on 12/5/2016.
  */
 public class SyncStarter {
-    public static void main(String[] args) throws IOException, SQLException {
+    public static void main(String[] args) {
         new PropertyResources();
-        Synchronization synchronizer = new Synchronization();
-        synchronizer.synchronizeCompany(PropertyResources.COMPANY);
+        JobDetail job = JobBuilder.newJob(SyncJob.class).build();
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withSchedule(CronScheduleBuilder.cronSchedule(PropertyResources.EXECUTE_CRON)).build();
+        try {
+            Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+            scheduler.start();
+            scheduler.scheduleJob(job, trigger);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
     }
 }

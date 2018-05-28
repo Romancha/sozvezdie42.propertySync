@@ -91,13 +91,13 @@ public class ImageDAOImpl implements ImageDAO {
                 boolean doneThumbnail = ftpClient.storeFile(thumbnailPath, thumbnailInputStream);
                 System.out.println("FTP: Transfer image: " + imagePath + " completed");
                 if (!doneThumbnail) {
-                    System.out.println("FTP: ERROR! transfer thumbnail: " + thumbnailPath + " + didn't complete");
+                    System.out.println("FTP: ERROR! transfer thumbnail: " + thumbnailPath + " didn't complete");
                     error = true;
                 } else {
                     System.out.println("FTP: Transfer thumbnail: " + thumbnailPath + " completed");
                 }
             } else {
-                System.out.println("FTP: ERROR! transfer image: " + thumbnailPath + " + didn't complete");
+                System.out.println("FTP: ERROR! transfer image: " + thumbnailPath + " didn't complete");
             }
         } catch (IOException e) {
             StringWriter errors = new StringWriter();

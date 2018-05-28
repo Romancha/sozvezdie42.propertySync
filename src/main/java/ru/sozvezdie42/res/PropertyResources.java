@@ -24,6 +24,8 @@ public class PropertyResources {
 
     public static String COMPANY;
 
+    public static String EXECUTE_CRON;
+
     public PropertyResources() {
         Properties prop = new Properties();
         InputStream inputStream = null;
@@ -47,6 +49,8 @@ public class PropertyResources {
             FTP_PASSWORD = prop.getProperty("ftp.password");
 
             COMPANY = prop.getProperty("company");
+
+            EXECUTE_CRON = prop.getProperty("execute.cron");
 
         } catch (IOException ex) {
             ex.printStackTrace();
