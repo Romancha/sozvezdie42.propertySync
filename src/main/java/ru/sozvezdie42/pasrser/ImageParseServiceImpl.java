@@ -1,5 +1,6 @@
 package ru.sozvezdie42.pasrser;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -12,6 +13,9 @@ import java.util.List;
  * @author Romancha
  */
 public class ImageParseServiceImpl implements ImageParserService {
+
+    private final static Logger log = Logger.getLogger(ImageParseServiceImpl.class);
+
     @Override
     public ArrayList<Image> parseImages(String propertyUrl) {
         ArrayList<Image> images = new ArrayList<>();
@@ -42,7 +46,7 @@ public class ImageParseServiceImpl implements ImageParserService {
             }
         });
 
-        System.out.println("Images: " + imagesUrl);
+        log.debug("Images: " + imagesUrl);
 
         imagesUrl.forEach(imageUrl -> {
             String[] urlData = imageUrl.split("/");

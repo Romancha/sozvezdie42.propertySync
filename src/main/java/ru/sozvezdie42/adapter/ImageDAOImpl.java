@@ -1,12 +1,14 @@
 package ru.sozvezdie42.adapter;
 
-import org.apache.commons.net.ftp.*;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.log4j.Logger;
 import org.imgscalr.Scalr;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.components.Image;
 import ru.sozvezdie42.res.PropertyResources;
+import ru.sozvezdie42.synchronizer.Synchronization;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,13 +23,15 @@ import java.util.ArrayList;
  */
 public class ImageDAOImpl implements ImageDAO {
 
+    private final static Logger log = Logger.getLogger(ImageDAOImpl.class);
+
     private java.sql.Connection connection;
     private FTPClient ftpClient;
 
     @Override
     public boolean writeImageFile(Image image) {
         if (image == null || image.getImageUrl().equals("")) {
-            System.out.println("ERROR! Image or image URL is NULL");
+            log.error("Image or image URL is NULL");
             return false;
         }
 
@@ -61,12 +65,12 @@ public class ImageDAOImpl implements ImageDAO {
 
     private boolean writeOnFTP(Image image) {
         if (!ftpClient.isConnected()) {
-            System.out.println("FTP: ERROR! Cannot write image: " + image.getImageUrl() + ", because ftp client doesn't connected");
+            log.error("FTP: Cannot write image: " + image.getImageUrl() + ", because ftp client doesn't connected");
             return false;
         }
 
         if (ftpClient == null) {
-            System.out.println("FTP: ERROR! FTP client not exists");
+            log.error("FTP: FTP client not exists");
             return false;
         }
 
@@ -89,20 +93,20 @@ public class ImageDAOImpl implements ImageDAO {
 
             if (doneImage) {
                 boolean doneThumbnail = ftpClient.storeFile(thumbnailPath, thumbnailInputStream);
-                System.out.println("FTP: Transfer image: " + imagePath + " completed");
+                log.debug("FTP: Transfer image: " + imagePath + " completed");
                 if (!doneThumbnail) {
-                    System.out.println("FTP: ERROR! transfer thumbnail: " + thumbnailPath + " didn't complete");
+                    log.error("FTP: transfer thumbnail: " + thumbnailPath + " didn't complete");
                     error = true;
                 } else {
-                    System.out.println("FTP: Transfer thumbnail: " + thumbnailPath + " completed");
+                    log.debug("FTP: Transfer thumbnail: " + thumbnailPath + " completed");
                 }
             } else {
-                System.out.println("FTP: ERROR! transfer image: " + thumbnailPath + " didn't complete");
+                log.error("FTP: transfer image: " + thumbnailPath + " didn't complete");
             }
         } catch (IOException e) {
             StringWriter errors = new StringWriter();
             e.printStackTrace(new PrintWriter(errors));
-            System.out.println(errors.toString());
+            log.error(errors.toString());
         }
         return !error;
     }
@@ -132,13 +136,13 @@ public class ImageDAOImpl implements ImageDAO {
 
     public boolean deleteImagesOnFTP(Property property) {
         if (!ftpClient.isConnected()) {
-            System.out.println("FTP: ERROR! Cannot delete image from property: " + property.getAlias()
+            log.error("FTP: Cannot delete image from property: " + property.getAlias()
                     + ", because ftl client doesn't connected");
             return false;
         }
 
         if (ftpClient == null) {
-            System.out.println("FTP: ERROR! FTP client not exists");
+            log.error("FTP: FTP client not exists");
             return false;
         }
 
@@ -171,7 +175,7 @@ public class ImageDAOImpl implements ImageDAO {
             }
         } catch (SQLException | IOException e) {
             success = false;
-            System.out.println("Cannot delete images from property: " + property.getAlias());
+            log.error("Cannot delete images from property: " + property.getAlias());
             e.printStackTrace();
         }
         return success;
@@ -179,17 +183,16 @@ public class ImageDAOImpl implements ImageDAO {
 
     private boolean deleteFile(String path) throws IOException {
         if (ftpClient.deleteFile(path)) {
-            System.out.println("FTP: File success deleted: " + path);
+            log.debug("FTP: File success deleted: " + path);
             return true;
         } else {
-            System.out.println("FTP: ERROR! cannot delete file: " + path);
+            log.debug("FTP: ERROR! cannot delete file: " + path);
             return false;
         }
     }
 
     private boolean deleteImageOnLocale(Property property) {
         int dbPropKey = new ResidentialPropertyDAOImpl(connection, this).getPropertyDbKey(property);
-
 
         String query = "SELECT * FROM aj2or_iproperty_images WHERE propid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -254,49 +257,9 @@ public class ImageDAOImpl implements ImageDAO {
         return true;
     }
 
-    private boolean connectToFTP() {
-        boolean error = false;
-
-        this.ftpClient = new FTPClient();
-
-        try {
-            FTPClientConfig config = new FTPClientConfig();
-            ftpClient.configure(config);
-
-            int reply;
-            String server = PropertyResources.FTP_SERVER;
-            ftpClient.connect(server);
-            ftpClient.login(PropertyResources.FTP_USER, PropertyResources.FTP_PASSWORD);
-
-            System.out.println("Connected to " + server + ".");
-            System.out.print(ftpClient.getReplyString());
-
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
-            reply = ftpClient.getReplyCode();
-
-            if (!FTPReply.isPositiveCompletion(reply)) {
-                ftpClient.disconnect();
-                System.out.println("FTP server refused connection.");
-            }
-        } catch (IOException e) {
-            error = true;
-
-            if (ftpClient.isConnected()) {
-                try {
-                    ftpClient.disconnect();
-                } catch (IOException ioe) {
-                    // do nothing
-                }
-            }
-            e.printStackTrace();
-        }
-
-        return error;
-    }
-
-    public ImageDAOImpl(java.sql.Connection connection) {
+    public ImageDAOImpl(java.sql.Connection connection, FTPClient ftpClient) {
         this.connection = connection;
-        connectToFTP();
+        this.ftpClient = ftpClient;
     }
 
     public FTPClient getFtpClient() {

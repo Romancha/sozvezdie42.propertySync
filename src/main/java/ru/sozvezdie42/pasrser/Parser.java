@@ -1,5 +1,6 @@
 package ru.sozvezdie42.pasrser;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -15,6 +16,8 @@ import java.util.Arrays;
  * @author Romancha on 12/5/2016.
  */
 public class Parser {
+
+    private final static Logger log = Logger.getLogger(Parser.class);
 
     public String getRef(Document document) {
         Element pElement = document.getElementsByClass("navysearch").get(0);
@@ -41,7 +44,7 @@ public class Parser {
     }
 
     //TODO try change to google\yandex API
-    public double[] getCoordinates (Document document) {
+    public double[] getCoordinates(Document document) {
         double[] coordinates = new double[]{0, 0};
 
         Element yaMapsElement = document.getElementsByClass("object_tables_map").get(0);
@@ -62,7 +65,7 @@ public class Parser {
 
                 coordinates = new double[]{equator, meridian};
             } catch (NumberFormatException e) {
-                System.out.println("WARNING! coordinates not paring " + Arrays.toString(coordElements));
+                log.warn("Coordinates not paring " + Arrays.toString(coordElements));
             }
         }
 
@@ -131,7 +134,4 @@ public class Parser {
         agent.setWatchers(watchers);
         return agent;
     }
-
-
-
 }

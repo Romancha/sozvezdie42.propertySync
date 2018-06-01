@@ -1,5 +1,6 @@
 package ru.sozvezdie42.pasrser;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,6 +21,8 @@ import java.util.Map;
  * @author Romancha on 12/6/2016.
  */
 public class ParseServiceImpl implements ParseService {
+
+    private final static Logger log = Logger.getLogger(ParseServiceImpl.class);
 
     @Override
     public Property parseProperty(String propertyUrl) {
@@ -315,7 +318,7 @@ public class ParseServiceImpl implements ParseService {
 
                     String propUrl = site + categoryLink + "/" + code;
 
-                    System.out.println("Parse property: " + propUrl);
+                    log.info("Parse property: " + propUrl);
                     Property property = parseProperty(propUrl);
                     if (property != null) {
                         propList.add(property);

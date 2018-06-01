@@ -24,9 +24,7 @@ public class AgentDAOImpl implements AgentDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, dbAgentKey);
             preparedStatement.setInt(2, dbPropKey);
-
             preparedStatement.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

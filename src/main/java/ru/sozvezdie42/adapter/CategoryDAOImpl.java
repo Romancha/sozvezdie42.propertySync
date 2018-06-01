@@ -21,7 +21,6 @@ public class CategoryDAOImpl implements CategoryDAO {
     public boolean createPropCategoryBonds(int dbKeyProp, int dbKeyCategory) {
         String query = "INSERT INTO aj2or_iproperty_propmid (prop_id, cat_id) VALUES (?, ?);";
 
-
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, dbKeyProp);
             preparedStatement.setInt(2, dbKeyCategory);
@@ -30,7 +29,6 @@ public class CategoryDAOImpl implements CategoryDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
 
         return true;
     }

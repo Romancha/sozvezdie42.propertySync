@@ -1,11 +1,13 @@
 package ru.sozvezdie42.adapter;
 
+import org.apache.log4j.Logger;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.ResidentialProperty;
 import ru.sozvezdie42.iproperty.components.*;
 import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
 import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
 import ru.sozvezdie42.iproperty.components.specifications.State;
+import ru.sozvezdie42.pasrser.ImageParseServiceImpl;
 import ru.sozvezdie42.synchronizer.Synchronization;
 
 import java.sql.*;
@@ -17,6 +19,8 @@ import java.util.List;
  * @author Romancha
  */
 public class ResidentialPropertyDAOImpl implements PropertyDAO {
+
+    private final static Logger log = Logger.getLogger(ResidentialPropertyDAOImpl.class);
 
     private Connection connection;
     private ImageDAO imageDAO;
@@ -159,7 +163,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             imageDAO.deleteImages(property);
             imageDAO.executeImages(property);
 
-            System.out.println("Property created - alias: " + property.getAlias() + " db key: " + property.getDbKey());
+            log.info("Property created - alias: " + property.getAlias() + " db key: " + property.getDbKey());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -293,7 +297,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
             imageDAO.deleteImages(property);
             imageDAO.executeImages(property);
 
-            System.out.println("Property updated - alias: " + property.getAlias() + " db key: " + property.getDbKey());
+            log.info("Property updated - alias: " + property.getAlias() + " db key: " + property.getDbKey());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -316,7 +320,7 @@ public class ResidentialPropertyDAOImpl implements PropertyDAO {
         new CategoryDAOImpl(connection).deleteBondsCategory(property);
         imageDAO.deleteImages(property);
 
-        System.out.println("Property deleted - alias: " + property.getAlias() + "db key: " + property.getDbKey());
+        log.info("Property deleted - alias: " + property.getAlias() + "db key: " + property.getDbKey());
 
         return true;
     }

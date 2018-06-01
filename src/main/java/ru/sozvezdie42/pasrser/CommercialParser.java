@@ -1,5 +1,6 @@
 package ru.sozvezdie42.pasrser;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -13,6 +14,8 @@ import java.util.Arrays;
  * @author Romancha on 12/26/2016.
  */
 public class CommercialParser extends Parser {
+
+    private final static Logger log = Logger.getLogger(CommercialParser.class);
 
     @Override
     public String getRef(Document document) {
@@ -90,7 +93,7 @@ public class CommercialParser extends Parser {
 
                 coordinates = new double[]{equator, meridian};
             } catch (NumberFormatException e) {
-                System.out.println("WARNING! coordinates not paring " + Arrays.toString(coordElements));
+                log.warn("Coordinates not paring " + Arrays.toString(coordElements));
             }
         }
 

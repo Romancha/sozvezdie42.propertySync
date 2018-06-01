@@ -3,7 +3,10 @@ package ru.sozvezdie42.pasrser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import ru.sozvezdie42.iproperty.components.*;
+import ru.sozvezdie42.iproperty.components.Location;
+import ru.sozvezdie42.iproperty.components.PropertyType;
+import ru.sozvezdie42.iproperty.components.ResidentialSize;
+import ru.sozvezdie42.iproperty.components.Storey;
 import ru.sozvezdie42.iproperty.components.specifications.Balcony;
 import ru.sozvezdie42.iproperty.components.specifications.Bathroom;
 import ru.sozvezdie42.iproperty.components.specifications.ResidentialSpecifications;
@@ -114,11 +117,11 @@ public class ResidentialParser extends Parser {
         Elements elements = document.getElementsByClass("domstor_object_technic");
         Elements tableElements = elements.select("tr");
 
-        Bathroom bathroom = null;
+        Bathroom bathroom;
         String type = "";
         int amt = 0;
 
-        Balcony balcony = null;
+        Balcony balcony;
         int balconyAmt = 0;
         int loggiaAmt = 0;
         String decoration = "";
