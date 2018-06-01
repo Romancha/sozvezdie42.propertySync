@@ -24,6 +24,7 @@ public class PropertyResources {
 
     public static String COMPANY;
 
+    public static boolean EXECUTE_CRON_ENABLED;
     public static String EXECUTE_CRON;
 
     public PropertyResources() {
@@ -43,13 +44,14 @@ public class PropertyResources {
             PICTURE_LOCALE_PATH = prop.getProperty("picture.locale.path");
             PICTURE_PATH_SHORT_DB = prop.getProperty("picture.path.short.db");
 
-            FTP_ENABLED = Boolean.valueOf(prop.getProperty("ftp.enabled"));
+            FTP_ENABLED = Boolean.parseBoolean(prop.getProperty("ftp.enabled"));
             FTP_SERVER = prop.getProperty("ftp.server");
             FTP_USER = prop.getProperty("ftp.user");
             FTP_PASSWORD = prop.getProperty("ftp.password");
 
             COMPANY = prop.getProperty("company");
 
+            EXECUTE_CRON_ENABLED = Boolean.parseBoolean(prop.getProperty("execute.cron.enabled"));
             EXECUTE_CRON = prop.getProperty("execute.cron");
 
         } catch (IOException ex) {

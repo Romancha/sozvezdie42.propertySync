@@ -45,7 +45,7 @@ public class ImageDAOImpl implements ImageDAO {
     private boolean writeOnLocale(Image image) {
         try {
             Connection.Response resultImageResponse = Jsoup.connect(image.getImageUrl()).ignoreContentType(true)
-                    .timeout(10*1000).execute();
+                    .timeout(10 * 1000).execute();
             String fileOutName = image.getFileName() + image.getFileType();
 
             File imageFile = new java.io.File(PropertyResources.PICTURE_LOCALE_PATH, fileOutName);
@@ -83,22 +83,26 @@ public class ImageDAOImpl implements ImageDAO {
             File imageFile = new File(PropertyResources.PICTURE_LOCALE_PATH + "/" + imageFullName);
             File thumbnailFile = new File(PropertyResources.PICTURE_LOCALE_PATH + "/" + thumbnailFullName);
 
-            InputStream imageInputStream = new FileInputStream(imageFile);
-            InputStream thumbnailInputStream = new FileInputStream(thumbnailFile);
-
+            boolean doneImage;
             String imagePath = PropertyResources.PICTURE_PATH + imageFullName;
             String thumbnailPath = PropertyResources.PICTURE_PATH + thumbnailFullName;
 
-            boolean doneImage = ftpClient.storeFile(imagePath, imageInputStream);
+            try (InputStream imageInputStream = new FileInputStream(imageFile)) {
+
+                doneImage = ftpClient.storeFile(imagePath, imageInputStream);
+            }
 
             if (doneImage) {
-                boolean doneThumbnail = ftpClient.storeFile(thumbnailPath, thumbnailInputStream);
-                log.debug("FTP: Transfer image: " + imagePath + " completed");
-                if (!doneThumbnail) {
-                    log.error("FTP: transfer thumbnail: " + thumbnailPath + " didn't complete");
-                    error = true;
-                } else {
-                    log.debug("FTP: Transfer thumbnail: " + thumbnailPath + " completed");
+                try (InputStream thumbnailInputStream = new FileInputStream(thumbnailFile)) {
+                    boolean doneThumbnail = ftpClient.storeFile(thumbnailPath, thumbnailInputStream);
+
+                    log.debug("FTP: Transfer image: " + imagePath + " completed");
+                    if (!doneThumbnail) {
+                        log.error("FTP: transfer thumbnail: " + thumbnailPath + " didn't complete");
+                        error = true;
+                    } else {
+                        log.debug("FTP: Transfer thumbnail: " + thumbnailPath + " completed");
+                    }
                 }
             } else {
                 log.error("FTP: transfer image: " + thumbnailPath + " didn't complete");

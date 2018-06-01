@@ -21,15 +21,17 @@ public class SyncStarter {
 
         new PropertyResources();
 
+        if (PropertyResources.EXECUTE_CRON_ENABLED) {
+            startCronJob();
+        } else {
+            syncNow();
+        }
+    }
+
+    private static void startCronJob() {
         log.info("Cron: " + PropertyResources.EXECUTE_CRON);
 
-        try {
-            new Synchronization().synchronizeCompany(PropertyResources.COMPANY);
-        } catch (SQLException e) {
-            log.error("ERROR", e);
-        }
-
-        /*JobDetail job = JobBuilder.newJob(SyncJob.class).build();
+        JobDetail job = JobBuilder.newJob(SyncJob.class).build();
         Trigger trigger = TriggerBuilder.newTrigger()
                 .withSchedule(CronScheduleBuilder.cronSchedule(PropertyResources.EXECUTE_CRON)).build();
         try {
@@ -38,6 +40,14 @@ public class SyncStarter {
             scheduler.scheduleJob(job, trigger);
         } catch (SchedulerException e) {
             e.printStackTrace();
-        }*/
+        }
+    }
+
+    private static void syncNow() {
+        try {
+            new Synchronization().synchronizeCompany(PropertyResources.COMPANY);
+        } catch (SQLException e) {
+            log.error("ERROR", e);
+        }
     }
 }
