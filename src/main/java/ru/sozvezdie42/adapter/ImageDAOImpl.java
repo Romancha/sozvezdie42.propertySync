@@ -8,7 +8,6 @@ import org.jsoup.Jsoup;
 import ru.sozvezdie42.iproperty.Property;
 import ru.sozvezdie42.iproperty.components.Image;
 import ru.sozvezdie42.res.PropertyResources;
-import ru.sozvezdie42.synchronizer.Synchronization;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -88,7 +87,6 @@ public class ImageDAOImpl implements ImageDAO {
             String thumbnailPath = PropertyResources.PICTURE_PATH + thumbnailFullName;
 
             try (InputStream imageInputStream = new FileInputStream(imageFile)) {
-
                 doneImage = ftpClient.storeFile(imagePath, imageInputStream);
             }
 
@@ -105,7 +103,7 @@ public class ImageDAOImpl implements ImageDAO {
                     }
                 }
             } else {
-                log.error("FTP: transfer image: " + thumbnailPath + " didn't complete");
+                log.error("FTP: transfer image: " + thumbnailPath + " didn't complete. Reply: " + ftpClient.getReplyString());
             }
         } catch (IOException e) {
             StringWriter errors = new StringWriter();
